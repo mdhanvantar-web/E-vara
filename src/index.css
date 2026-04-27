@@ -217,3 +217,63 @@
   background: hsl(var(--border));
   border-radius: 2px;
 }
+
+/* Neon 3D UI treatment */
+@keyframes neon-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.neon-grid-bg {
+  background:
+    radial-gradient(circle at 10% 10%, hsl(var(--primary) / 0.2), transparent 35%),
+    radial-gradient(circle at 90% 20%, hsl(var(--severity-medium) / 0.14), transparent 38%),
+    radial-gradient(circle at 50% 80%, hsl(var(--severity-low) / 0.14), transparent 40%),
+    hsl(var(--background));
+}
+
+.neon-panel {
+  background: linear-gradient(
+      160deg,
+      hsl(var(--card) / 0.86),
+      hsl(var(--card) / 0.72)
+    );
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--primary) / 0.25);
+  box-shadow:
+    0 12px 30px hsl(var(--background) / 0.4),
+    0 0 0 1px hsl(var(--primary) / 0.08) inset,
+    0 0 18px hsl(var(--primary) / 0.12);
+}
+
+.neon-panel:hover {
+  border-color: hsl(var(--primary) / 0.45);
+  box-shadow:
+    0 18px 40px hsl(var(--background) / 0.45),
+    0 0 0 1px hsl(var(--primary) / 0.18) inset,
+    0 0 26px hsl(var(--primary) / 0.2);
+}
+
+.neon-3d {
+  transform-style: preserve-3d;
+  transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+}
+
+.neon-3d:hover {
+  transform: perspective(1100px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
+}
+
+.neon-float {
+  animation: neon-float 6s ease-in-out infinite;
+}
+
+.neon-title {
+  text-shadow:
+    0 0 8px hsl(var(--primary) / 0.45),
+    0 0 22px hsl(var(--primary) / 0.25);
+}

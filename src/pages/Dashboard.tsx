@@ -68,7 +68,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-2 min-w-0">
             <Shield className="h-5 w-5 shrink-0 text-primary" />
-            <h1 className="text-sm font-mono font-bold text-foreground tracking-tight truncate">E-Vara</h1>
+            <h1 className="text-sm font-mono font-bold text-foreground tracking-tight truncate neon-title">E-Vara</h1>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
             <button
@@ -130,7 +130,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
                 />
               </>
             ) : (
-              <div className="rounded-lg border border-border bg-card p-8 sm:p-12 text-center">
+              <div className="rounded-lg border border-border bg-card p-8 sm:p-12 text-center neon-panel neon-3d">
                 <Shield className="mx-auto mb-4 h-8 w-8 text-muted-foreground" />
                 <p className="text-xs sm:text-sm font-mono text-muted-foreground">
                   Complete identity verification and information to activate monitoring.

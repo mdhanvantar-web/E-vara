@@ -22,7 +22,7 @@ const IdentityForm = ({ onSave, initial }: IdentityFormProps) => {
   const inputClass = "w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-sm font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary";
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
+    <div className="rounded-lg border border-border bg-card p-6 neon-panel neon-3d">
       <div className="mb-4 flex items-center gap-2">
         <User className="h-4 w-4 text-primary" />
         <h3 className="text-sm font-mono font-semibold text-foreground uppercase tracking-wider">Identity Information</h3>
