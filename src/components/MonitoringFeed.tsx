@@ -100,7 +100,7 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
   }, []);
 
   return (
-    <div className="rounded-lg border border-border bg-card p-4 sm:p-6">
+O    <div className="rounded-lg border border-border bg-card p-4 sm:p-6 neon-panel neon-3d">
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 min-w-0">
           <Activity className="h-4 w-4 shrink-0 text-primary" />
@@ -111,7 +111,7 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
           className={`shrink-0 rounded-md px-3 py-1.5 text-xs font-mono font-medium transition-all ${
             monitoring
               ? "bg-secondary text-muted-foreground hover:text-foreground"
-              : "bg-primary text-primary-foreground hover:opacity-90"
+              : "bg-primary text-primary-foreground shadow-[0_0_18px_hsl(199_89%_52%_/_0.35)] hover:opacity-90"
           }`}
         >
           {monitoring ? "Stop" : "Start"}
@@ -137,7 +137,7 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
           alerts.map((alert) => (
             <div
               key={alert.id}
-              className={`relative rounded-md border border-border border-l-2 ${SEVERITY_STYLES[alert.severity]} bg-secondary p-3 transition-all ${alert.isNew ? "alert-wave" : ""}`}
+              className={`relative rounded-md border border-border border-l-2 ${SEVERITY_STYLES[alert.severity]} bg-secondary p-3 transition-all neon-3d ${alert.isNew ? "alert-wave" : ""}`}
             >
               {alert.isNew && (
                 <span className={`alert-pulse-dot absolute right-3 top-3 h-1.5 w-1.5 rounded-full ${SEVERITY_DOT[alert.severity]}`} />

@@ -36,7 +36,7 @@ export const IdentityIntelligenceCard = ({ signal }: IdentityIntelligenceCardPro
   };
 
   return (
-    <article className={`lift-3d neon-panel rounded-lg border-2 p-4 ${RISK_COLORS[signal.risk]}`}>
+    <article className={`rounded-lg border-2 p-4 ${RISK_COLORS[signal.risk]}`}>
       <div className="mb-2 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">🔍 Type</p>
@@ -83,7 +83,7 @@ export const IdentityIntelligenceCard = ({ signal }: IdentityIntelligenceCardPro
           href={signal.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="neon-button flex flex-1 items-center justify-center gap-1 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
+          className="flex flex-1 items-center justify-center gap-1 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
         >
           🔗 View Source
           <ExternalLink className="h-3.5 w-3.5" />

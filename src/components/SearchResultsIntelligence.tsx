@@ -53,7 +53,7 @@ export const SearchResultsIntelligence = ({
   };
 
   return (
-    <div className="neon-panel lift-3d rounded-lg border border-border bg-card p-6">
+    <div className="neon-card rounded-lg border border-border bg-card p-6">
       <div className="mb-6 flex items-center gap-2">
         <Search className="h-5 w-5 text-primary" />
         <h3 className="text-lg font-semibold text-foreground">
@@ -74,7 +74,7 @@ export const SearchResultsIntelligence = ({
         <button
           onClick={performSearch}
           disabled={loading || !fullName || !username}
-          className="neon-button flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
+          className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_18px_hsl(199_89%_52%_/_0.35)] hover:opacity-90 disabled:opacity-50 transition-opacity"
         >
           {loading ? (
             <>
