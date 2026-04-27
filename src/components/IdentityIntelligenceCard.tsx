@@ -7,11 +7,10 @@ interface IdentityIntelligenceCardProps {
 }
 
 const RISK_COLORS: Record<string, string> = {
-  "High Risk": "border-[hsl(var(--severity-high))] bg-[hsl(var(--severity-high)/0.07)] shadow-[0_0_22px_hsl(var(--severity-high)/0.18)]",
-  "Medium Risk":
-    "border-[hsl(var(--severity-medium))] bg-[hsl(var(--severity-medium)/0.07)] shadow-[0_0_22px_hsl(var(--severity-medium)/0.16)]",
-  "Low Risk": "border-[hsl(var(--severity-low))] bg-[hsl(var(--severity-low)/0.07)] shadow-[0_0_22px_hsl(var(--severity-low)/0.16)]",
-  Ignore: "border-border bg-secondary shadow-[0_0_16px_hsl(var(--border)/0.16)]",
+  "High Risk": "border-[hsl(var(--severity-high))] bg-[hsl(var(--severity-high)/0.05)]",
+  "Medium Risk": "border-[hsl(var(--severity-medium))] bg-[hsl(var(--severity-medium)/0.05)]",
+  "Low Risk": "border-[hsl(var(--severity-low))] bg-[hsl(var(--severity-low)/0.05)]",
+  Ignore: "border-border bg-secondary",
 };
 
 const CONFIDENCE_COLORS = {
@@ -37,7 +36,7 @@ export const IdentityIntelligenceCard = ({ signal }: IdentityIntelligenceCardPro
   };
 
   return (
-    <article className={`neon-card rounded-lg border-2 p-4 ${RISK_COLORS[signal.risk]}`}>
+    <article className={`rounded-lg border-2 p-4 ${RISK_COLORS[signal.risk]}`}>
       <div className="mb-2 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">🔍 Type</p>

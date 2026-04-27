@@ -53,7 +53,7 @@ export const SearchResultsIntelligence = ({
   };
 
   return (
-    <div className="neon-card neon-surface neon-divider rounded-lg border border-border bg-card p-6">
+    <div className="neon-card rounded-lg border border-border bg-card p-6">
       <div className="mb-6 flex items-center gap-2">
         <Search className="h-5 w-5 text-primary" />
         <h3 className="text-lg font-semibold text-foreground">

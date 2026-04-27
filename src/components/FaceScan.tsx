@@ -151,7 +151,7 @@ const FaceScan = ({ onComplete, existingImage }: FaceScanProps) => {
   }, [stopStream]);
 
   return (
-    <div className="neon-card neon-surface rounded-lg border border-border bg-card p-6">
+    <div className="neon-card rounded-lg border border-border bg-card p-6">
       <div className="mb-4 flex items-center gap-2">
         <Camera className="h-4 w-4 text-primary" />
         <h3 className="text-sm font-mono font-semibold text-foreground uppercase tracking-wider">
