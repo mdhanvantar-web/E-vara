@@ -36,7 +36,7 @@ export const IdentityIntelligenceCard = ({ signal }: IdentityIntelligenceCardPro
   };
 
   return (
-    <article className={`neon-card rounded-lg border-2 p-4 ${RISK_COLORS[signal.risk]}`}>
+    <article className={`rounded-lg border-2 p-4 ${RISK_COLORS[signal.risk]}`}>
       <div className="mb-2 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">🔍 Type</p>
