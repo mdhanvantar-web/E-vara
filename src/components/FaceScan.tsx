@@ -151,7 +151,7 @@ const FaceScan = ({ onComplete, existingImage }: FaceScanProps) => {
   }, [stopStream]);
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
+    <div className="neon-card neon-surface rounded-lg border border-border bg-card p-6">
       <div className="mb-4 flex items-center gap-2">
         <Camera className="h-4 w-4 text-primary" />
         <h3 className="text-sm font-mono font-semibold text-foreground uppercase tracking-wider">
@@ -211,11 +211,25 @@ const FaceScan = ({ onComplete, existingImage }: FaceScanProps) => {
       ) : (
         <button
           onClick={startScan}
-          className="w-full rounded-md border border-border bg-secondary px-4 py-8 text-sm font-mono text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+          className="w-full rounded-md border border-border bg-secondary px-4 py-8 text-sm font-mono text-muted-foreground shadow-[inset_0_0_24px_hsl(199_89%_55%_/_0.08)] hover:border-primary hover:text-primary hover:shadow-[0_0_22px_hsl(199_89%_55%_/_0.26)] transition-colors"
         >
           Start Face Scan
         </button>
       )}
+
+
+      <div className="mt-4 rounded-md border border-[hsl(48,96%,53%/0.3)] bg-[hsl(48,96%,53%/0.1)] px-3 py-2.5">
+        <div className="flex gap-2">
+          <span className="shrink-0 text-lg">⚠️</span>
+          <div>
+            <p className="text-xs font-semibold text-[#d97706]">Face Verification Disclaimer</p>
+            <p className="mt-1 text-xs leading-relaxed text-[#b45309]">
+              Face verification is currently experimental. Real-world confidence ranges between 40–50%
+              depending on lighting, angle, and input quality.
+            </p>
+          </div>
+        </div>
+      </div>
 
       <canvas ref={canvasRef} className="hidden" />
     </div>

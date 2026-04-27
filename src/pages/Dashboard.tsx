@@ -7,6 +7,7 @@ import IdentityForm from "@/components/IdentityForm";
 import MonitoringFeed, { type AlertItem } from "@/components/MonitoringFeed";
 import ToolsPanel from "@/components/ToolsPanel";
 import StatsCards from "@/components/StatsCards";
+import { SearchResultsIntelligence } from "@/components/SearchResultsIntelligence";
 import AlertHistory from "@/pages/AlertHistory";
 
 interface DashboardProps {
@@ -115,15 +116,18 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
 
           <div className="space-y-4">
             {isSetupComplete ? (
-              <MonitoringFeed
-                fullName={identity!.fullName}
-                username={identity!.username}
-                keywords={identity!.keywords || ""}
-                onAlertsChange={handleAlertsChange}
-                onMonitoringChange={handleMonitoringChange}
-              />
+              <>
+                <MonitoringFeed
+                  fullName={identity!.fullName}
+                  username={identity!.username}
+                  keywords={identity!.keywords || ""}
+                  onAlertsChange={handleAlertsChange}
+                  onMonitoringChange={handleMonitoringChange}
+                />
+                <SearchResultsIntelligence fullName={identity!.fullName} username={identity!.username} />
+              </>
             ) : (
-              <div className="rounded-lg border border-border bg-card p-8 sm:p-12 text-center">
+              <div className="neon-card neon-surface rounded-lg border border-border bg-card p-8 text-center sm:p-12">
                 <Shield className="mx-auto mb-4 h-8 w-8 text-muted-foreground" />
                 <p className="text-xs sm:text-sm font-mono text-muted-foreground">
                   Complete identity verification and information to activate monitoring.
@@ -131,7 +135,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
               </div>
             )}
 
-            <div className="rounded-lg border border-border bg-card p-4">
+            <div className="neon-card neon-surface neon-divider rounded-lg border border-border bg-card p-4">
               <p className="text-xs font-body text-muted-foreground leading-relaxed text-center">
                 E-Vara is a prototype monitoring tool designed to help users identify potential identity misuse online.
                 No real web scraping occurs during this demonstration.
