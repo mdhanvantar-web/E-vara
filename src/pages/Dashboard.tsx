@@ -64,6 +64,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
   }, []);
 
   const isSetupComplete = identity?.faceImage && identity?.fullName;
+  // NOTE: Risk scoring is centralized in CyberIntelligencePanel to avoid duplicate declarations in this scope.
 
   const riskScore = useMemo(() => {
     const base = 28;
