@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Bell, ScanFace, Clock, Radar } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Bell, ScanFace, Clock } from "lucide-react";
 
 interface StatsCardsProps {
   alertCount: number;
@@ -8,29 +8,16 @@ interface StatsCardsProps {
   monitoringStartTime: Date | null;
 }
 
-const AnimatedValue = ({ value }: { value: number }) => {
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setDisplay((prev) => {
-        if (prev === value) {
-          clearInterval(id);
-          return prev;
-        }
-        const delta = value > prev ? 1 : -1;
-        return prev + delta;
-      });
-    }, 35);
-
-    return () => clearInterval(id);
-  }, [value]);
-
-  return <span className="tabular-nums">{display}</span>;
+const easeValue = (target: number, current: number) => {
+  if (target === current) return current;
+  const diff = target - current;
+  return current + Math.sign(diff) * Math.max(1, Math.floor(Math.abs(diff) / 4));
 };
 
 const StatsCards = ({ alertCount, scanCount, monitoringActive, monitoringStartTime }: StatsCardsProps) => {
   const [uptime, setUptime] = useState("00:00:00");
+  const [liveAlerts, setLiveAlerts] = useState(alertCount);
+  const [liveScans, setLiveScans] = useState(scanCount);
 
   useEffect(() => {
     if (!monitoringActive || !monitoringStartTime) {
@@ -49,36 +36,39 @@ const StatsCards = ({ alertCount, scanCount, monitoringActive, monitoringStartTi
     return () => clearInterval(id);
   }, [monitoringActive, monitoringStartTime]);
 
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLiveAlerts((curr) => easeValue(alertCount, curr));
+      setLiveScans((curr) => easeValue(scanCount, curr));
+    }, 75);
+    return () => clearInterval(id);
+  }, [alertCount, scanCount]);
+
+  const cards = useMemo(
+    () => [
+      { icon: Bell, label: "Total Alerts", value: String(liveAlerts), meter: Math.min(100, liveAlerts * 8) },
+      { icon: ScanFace, label: "Scans Complete", value: String(liveScans), meter: Math.min(100, liveScans * 12) },
+      { icon: Clock, label: "Uptime", value: uptime, meter: monitoringActive ? 100 : 12 },
+    ],
+    [liveAlerts, liveScans, uptime, monitoringActive],
+  );
+
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
-      <div className="glass-panel interactive-panel cyber-ripple p-3 sm:p-4">
-        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
-          <Bell className="h-3.5 w-3.5 text-primary" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Total Alerts</span>
-        </div>
-        <p className="text-lg font-bold sm:text-xl"><AnimatedValue value={alertCount} /></p>
-      </div>
-
-      <div className="glass-panel interactive-panel cyber-ripple p-3 sm:p-4">
-        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
-          <ScanFace className="h-3.5 w-3.5 text-primary" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Scans Complete</span>
-        </div>
-        <p className="text-lg font-bold sm:text-xl"><AnimatedValue value={scanCount} /></p>
-      </div>
-
-      <div className="glass-panel interactive-panel p-3 sm:p-4">
-        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
-          <Clock className="h-3.5 w-3.5 text-primary" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Uptime</span>
-        </div>
-        <p className="text-lg font-bold tabular-nums sm:text-xl">{uptime}</p>
-      </div>
-
-      <div className="glass-panel interactive-panel p-3 sm:p-4">
-        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
-          <Radar className="h-3.5 w-3.5 text-primary" />
-          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Live Monitoring</span>
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      {cards.map((card, i) => (
+        <div
+          key={card.label}
+          className="glass-panel scanline-wrap lift-3d rounded-xl p-3.5 sm:p-4"
+          style={{ animationDelay: `${i * 90}ms`, animationFillMode: "both" }}
+        >
+          <div className="mb-2 flex items-center gap-1.5">
+            <card.icon className="h-3.5 w-3.5 text-primary" />
+            <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{card.label}</span>
+          </div>
+          <p className="text-lg font-mono font-bold tabular-nums text-foreground sm:text-xl">{card.value}</p>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary/90">
+            <div className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500" style={{ width: `${card.meter}%` }} />
+          </div>
         </div>
         <p className={`text-sm font-semibold ${monitoringActive ? "text-primary monitor-pulse" : "text-muted-foreground"}`}>
           {monitoringActive ? "ACTIVE" : "STANDBY"}

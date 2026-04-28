@@ -362,106 +362,110 @@
     0 0 22px hsl(var(--primary) / 0.25);
 }
 
-/* Futuristic intelligence UI helpers */
-.glass-panel {
-  border: 1px solid hsl(var(--primary) / 0.28);
-  background:
-    linear-gradient(140deg, hsl(var(--card) / 0.76), hsl(var(--card) / 0.58)),
-    radial-gradient(circle at top right, hsl(var(--primary) / 0.16), transparent 52%),
-    radial-gradient(circle at bottom left, hsl(285 95% 66% / 0.14), transparent 58%);
-  box-shadow:
-    inset 0 1px 0 hsl(0 0% 100% / 0.08),
-    inset 0 -12px 20px hsl(220 40% 2% / 0.25),
-    0 18px 38px hsl(var(--background) / 0.45),
-    0 0 26px hsl(var(--primary) / 0.15);
-  backdrop-filter: blur(14px);
+@layer components {
+  .glass-panel {
+    position: relative;
+    border: 1px solid hsl(var(--primary) / 0.22);
+    background:
+      linear-gradient(160deg, hsl(var(--card) / 0.72) 0%, hsl(var(--card) / 0.5) 65%, hsl(262 80% 55% / 0.08) 100%),
+      radial-gradient(circle at 20% 0%, hsl(var(--primary) / 0.15) 0%, transparent 45%);
+    backdrop-filter: blur(14px);
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.08),
+      inset 0 -12px 18px hsl(225 70% 8% / 0.15),
+      0 8px 26px hsl(var(--primary) / 0.16),
+      0 0 32px hsl(270 90% 62% / 0.1);
+  }
+
+  .scanline-wrap {
+    overflow: hidden;
+  }
+
+  .scanline-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -40% 0 auto 0;
+    height: 38%;
+    background: linear-gradient(180deg, transparent 0%, hsl(var(--primary) / 0.2) 52%, transparent 100%);
+    opacity: 0.25;
+    pointer-events: none;
+    animation: panel-scan 4.8s linear infinite;
+  }
+
+  .status-dot {
+    background: hsl(var(--primary));
+    box-shadow: 0 0 8px hsl(var(--primary)), 0 0 16px hsl(var(--primary) / 0.9);
+    animation: status-blink 1.1s ease-in-out infinite;
+  }
+
+  .risk-heatmap {
+    background: linear-gradient(90deg, #22c55e 0%, #f59e0b 55%, #ef4444 100%);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.45);
+  }
+
+  .live-pulse {
+    animation: live-text-pulse 1.9s ease-in-out infinite;
+  }
+
+  .alert-enter {
+    animation: alert-enter 340ms ease-out;
+  }
+
+  .chat-fab {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--primary) / 0.45);
+    background: hsl(var(--card) / 0.75);
+    padding: 0.6rem 0.9rem;
+    font-size: 0.75rem;
+    color: hsl(var(--foreground));
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.35);
+    backdrop-filter: blur(10px);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .chat-fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 28px hsl(var(--primary) / 0.5);
+  }
+
+  .chat-panel {
+    position: fixed;
+    right: 1rem;
+    bottom: 4.2rem;
+    z-index: 40;
+    width: min(24rem, calc(100vw - 2rem));
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+  }
+
+  .node-glow {
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.8));
+  }
 }
 
-.interactive-panel {
-  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+@keyframes panel-scan {
+  0% { transform: translateY(-10%); }
+  100% { transform: translateY(300%); }
 }
 
-.interactive-panel:hover {
-  transform: translateY(-2px) perspective(900px) rotateX(2deg);
-  border-color: hsl(var(--primary) / 0.55);
-  box-shadow:
-    inset 0 1px 0 hsl(0 0% 100% / 0.1),
-    0 16px 32px hsl(var(--background) / 0.55),
-    0 0 30px hsl(var(--primary) / 0.24);
+@keyframes status-blink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
-.cyber-ripple {
-  position: relative;
-  overflow: hidden;
-}
-
-.cyber-ripple::after {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  background: radial-gradient(circle, hsl(var(--primary) / 0.25) 0%, transparent 62%);
-  opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 260ms ease, transform 260ms ease;
-  pointer-events: none;
-}
-
-.cyber-ripple:active::after {
-  opacity: 1;
-  transform: scale(1);
-}
-
-@keyframes monitor-pulse {
-  0%,
-  100% { text-shadow: 0 0 8px hsl(var(--primary) / 0.3); }
-  50% { text-shadow: 0 0 16px hsl(var(--primary) / 0.8); }
-}
-
-.monitor-pulse {
-  animation: monitor-pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes scan-move {
-  0% { transform: translateY(-120%); }
-  100% { transform: translateY(420px); }
-}
-
-.scanline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 24px;
-  background: linear-gradient(180deg, transparent, hsl(var(--primary) / 0.16), transparent);
-  animation: scan-move 6s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes system-blink {
-  0%,
-  100% { opacity: 1; box-shadow: 0 0 10px hsl(var(--severity-low)); }
-  50% { opacity: 0.35; box-shadow: 0 0 2px hsl(var(--severity-low)); }
-}
-
-.system-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: hsl(var(--severity-low));
-  animation: system-blink 1s steps(1) infinite;
+@keyframes live-text-pulse {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
 }
 
 @keyframes alert-enter {
-  from {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.alert-enter {
-  animation: alert-enter 320ms ease-out;
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
