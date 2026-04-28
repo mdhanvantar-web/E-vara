@@ -55,7 +55,7 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const counterRef = useRef(0);
 
-  const queries = [fullName, username, ...(keywords ? keywords.split(",").map(k => k.trim()).filter(Boolean) : [])].filter(Boolean);
+  const queries = [fullName, username, ...(keywords ? keywords.split(",").map((k) => k.trim()).filter(Boolean) : [])].filter(Boolean);
 
   const generateAlert = useCallback(() => {
     const query = queries[Math.floor(Math.random() * queries.length)] || fullName;
@@ -69,13 +69,13 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
       isNew: true,
       severity: template.severity,
     };
-    setAlerts(prev => {
+    setAlerts((prev) => {
       const updated = [alert, ...prev].slice(0, 50);
       onAlertsChange?.(updated);
       return updated;
     });
     setTimeout(() => {
-      setAlerts(prev => prev.map(a => a.id === alert.id ? { ...a, isNew: false } : a));
+      setAlerts((prev) => prev.map((a) => (a.id === alert.id ? { ...a, isNew: false } : a)));
     }, 3000);
   }, [fullName, queries, onAlertsChange]);
 
@@ -99,21 +99,18 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
     };
   }, []);
 
-  const wrapperClassName = "neon-panel lift-3d rounded-lg border border-border bg-card p-4 sm:p-6";
-
   return (
-O    <div className="rounded-lg border border-border bg-card p-4 sm:p-6 neon-panel neon-3d">
+    <div className="glass-panel relative overflow-hidden p-4 sm:p-6">
+      <div className="scanline" />
       <div className="mb-4 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex min-w-0 items-center gap-2">
           <Activity className="h-4 w-4 shrink-0 text-primary" />
-          <h3 className="text-xs sm:text-sm font-mono font-semibold text-foreground uppercase tracking-wider truncate">Monitoring</h3>
+          <h3 className="truncate text-xs font-semibold uppercase tracking-wider sm:text-sm">Monitoring</h3>
         </div>
         <button
           onClick={toggleMonitoring}
-          className={`shrink-0 rounded-md px-3 py-1.5 text-xs font-mono font-medium transition-all ${
-            monitoring
-              ? "bg-secondary text-muted-foreground hover:text-foreground"
-              : "bg-primary text-primary-foreground shadow-[0_0_18px_hsl(199_89%_52%_/_0.35)] hover:opacity-90"
+          className={`neon-button shrink-0 rounded-md px-3 py-1.5 text-xs font-mono font-medium transition-all ${
+            monitoring ? "bg-secondary text-muted-foreground hover:text-foreground" : "bg-primary text-primary-foreground"
           }`}
         >
           {monitoring ? "Stop" : "Start"}
@@ -123,34 +120,32 @@ O    <div className="rounded-lg border border-border bg-card p-4 sm:p-6 neon-pan
       {monitoring && (
         <div className="mb-4 flex items-center gap-2">
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
           </span>
-          <span className="text-xs font-mono text-muted-foreground">Live monitoring active</span>
+          <span className="monitor-pulse text-xs font-mono text-primary">Live monitoring active</span>
         </div>
       )}
 
       <div className="max-h-[400px] space-y-2 overflow-y-auto pr-1">
         {alerts.length === 0 ? (
-          <p className="py-8 text-center text-xs text-muted-foreground font-body">
+          <p className="py-8 text-center text-xs font-body text-muted-foreground">
             {monitoring ? "Scanning for mentions..." : "Start monitoring to receive alerts"}
           </p>
         ) : (
           alerts.map((alert) => (
             <div
               key={alert.id}
-              className={`relative rounded-md border border-border border-l-2 ${SEVERITY_STYLES[alert.severity]} bg-secondary p-3 transition-all neon-3d ${alert.isNew ? "alert-wave" : ""}`}
+              className={`relative rounded-md border border-border border-l-2 ${SEVERITY_STYLES[alert.severity]} bg-secondary/55 p-3 transition-all neon-3d ${alert.isNew ? "alert-wave alert-enter" : ""}`}
             >
-              {alert.isNew && (
-                <span className={`alert-pulse-dot absolute right-3 top-3 h-1.5 w-1.5 rounded-full ${SEVERITY_DOT[alert.severity]}`} />
-              )}
+              {alert.isNew && <span className={`alert-pulse-dot absolute right-3 top-3 h-1.5 w-1.5 rounded-full ${SEVERITY_DOT[alert.severity]}`} />}
               <div className="mb-2 flex items-start justify-between gap-2">
-                <p className="text-xs font-body text-foreground">{alert.message}</p>
+                <p className="text-xs text-foreground">{alert.message}</p>
                 <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-mono uppercase ${SEVERITY_BADGE[alert.severity]}`}>
                   {alert.severity}
                 </span>
               </div>
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex flex-wrap items-center gap-3">
                 <a
                   href={`https://www.google.com/search?q=${encodeURIComponent(alert.query)}`}
                   target="_blank"
@@ -167,9 +162,7 @@ O    <div className="rounded-lg border border-border bg-card p-4 sm:p-6 neon-pan
                 >
                   Bing <ExternalLink className="h-3 w-3" />
                 </a>
-                <span className="ml-auto text-[10px] font-mono text-muted-foreground">
-                  {alert.timestamp.toLocaleTimeString()}
-                </span>
+                <span className="ml-auto text-[10px] font-mono text-muted-foreground">{alert.timestamp.toLocaleTimeString()}</span>
               </div>
             </div>
           ))

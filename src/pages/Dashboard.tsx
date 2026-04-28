@@ -8,6 +8,7 @@ import MonitoringFeed, { type AlertItem } from "@/components/MonitoringFeed";
 import ToolsPanel from "@/components/ToolsPanel";
 import StatsCards from "@/components/StatsCards";
 import { SearchResultsIntelligence } from "@/components/SearchResultsIntelligence";
+import CyberIntelligencePanel from "@/components/CyberIntelligencePanel";
 import AlertHistory from "@/pages/AlertHistory";
 
 interface DashboardProps {
@@ -57,6 +58,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
   }, []);
 
   const isSetupComplete = identity?.faceImage && identity?.fullName;
+  // NOTE: Risk scoring is centralized in CyberIntelligencePanel to avoid duplicate declarations in this scope.
 
   if (showHistory) {
     return <AlertHistory alerts={alerts} onBack={() => setShowHistory(false)} />;
@@ -123,6 +125,12 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
                   keywords={identity!.keywords || ""}
                   onAlertsChange={handleAlertsChange}
                   onMonitoringChange={handleMonitoringChange}
+                />
+                <CyberIntelligencePanel
+                  fullName={identity!.fullName}
+                  username={identity!.username}
+                  alertCount={alerts.length}
+                  monitoringActive={monitoringActive}
                 />
                 <SearchResultsIntelligence
                   fullName={identity!.fullName}

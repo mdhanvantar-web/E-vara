@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, ScanFace, Clock } from "lucide-react";
+import { Bell, ScanFace, Clock, Radar } from "lucide-react";
 
 interface StatsCardsProps {
   alertCount: number;
@@ -7,6 +7,27 @@ interface StatsCardsProps {
   monitoringActive: boolean;
   monitoringStartTime: Date | null;
 }
+
+const AnimatedValue = ({ value }: { value: number }) => {
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDisplay((prev) => {
+        if (prev === value) {
+          clearInterval(id);
+          return prev;
+        }
+        const delta = value > prev ? 1 : -1;
+        return prev + delta;
+      });
+    }, 35);
+
+    return () => clearInterval(id);
+  }, [value]);
+
+  return <span className="tabular-nums">{display}</span>;
+};
 
 const StatsCards = ({ alertCount, scanCount, monitoringActive, monitoringStartTime }: StatsCardsProps) => {
   const [uptime, setUptime] = useState("00:00:00");
@@ -28,27 +49,41 @@ const StatsCards = ({ alertCount, scanCount, monitoringActive, monitoringStartTi
     return () => clearInterval(id);
   }, [monitoringActive, monitoringStartTime]);
 
-  const cards = [
-    { icon: Bell, label: "Total Alerts", value: String(alertCount) },
-    { icon: ScanFace, label: "Scans Complete", value: String(scanCount) },
-    { icon: Clock, label: "Uptime", value: uptime },
-  ];
-
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      {cards.map((card, i) => (
-        <div
-          key={card.label}
-          className="rounded-lg border border-border bg-card p-3 sm:p-4 animate-fade-in neon-panel neon-3d"
-          style={{ animationDelay: `${i * 100}ms`, animationFillMode: "both" }}
-        >
-          <div className="mb-1.5 sm:mb-2 flex items-center gap-1.5">
-            <card.icon className="h-3.5 w-3.5 text-primary" />
-            <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">{card.label}</span>
-          </div>
-          <p className="text-lg sm:text-xl font-mono font-bold text-foreground tabular-nums">{card.value}</p>
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+      <div className="glass-panel interactive-panel cyber-ripple p-3 sm:p-4">
+        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
+          <Bell className="h-3.5 w-3.5 text-primary" />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Total Alerts</span>
         </div>
-      ))}
+        <p className="text-lg font-bold sm:text-xl"><AnimatedValue value={alertCount} /></p>
+      </div>
+
+      <div className="glass-panel interactive-panel cyber-ripple p-3 sm:p-4">
+        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
+          <ScanFace className="h-3.5 w-3.5 text-primary" />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Scans Complete</span>
+        </div>
+        <p className="text-lg font-bold sm:text-xl"><AnimatedValue value={scanCount} /></p>
+      </div>
+
+      <div className="glass-panel interactive-panel p-3 sm:p-4">
+        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
+          <Clock className="h-3.5 w-3.5 text-primary" />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Uptime</span>
+        </div>
+        <p className="text-lg font-bold tabular-nums sm:text-xl">{uptime}</p>
+      </div>
+
+      <div className="glass-panel interactive-panel p-3 sm:p-4">
+        <div className="mb-1.5 flex items-center gap-1.5 sm:mb-2">
+          <Radar className="h-3.5 w-3.5 text-primary" />
+          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Live Monitoring</span>
+        </div>
+        <p className={`text-sm font-semibold ${monitoringActive ? "text-primary monitor-pulse" : "text-muted-foreground"}`}>
+          {monitoringActive ? "ACTIVE" : "STANDBY"}
+        </p>
+      </div>
     </div>
   );
 };

@@ -53,7 +53,7 @@ export const SearchResultsIntelligence = ({
   };
 
   return (
-    <div className="neon-card rounded-lg border border-border bg-card p-6">
+    <div className="glass-panel p-6">
       <div className="mb-6 flex items-center gap-2">
         <Search className="h-5 w-5 text-primary" />
         <h3 className="text-lg font-semibold text-foreground">
@@ -110,7 +110,7 @@ export const SearchResultsIntelligence = ({
         <div className="space-y-4">
           {/* Summary Stats */}
           <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
-            <div className="rounded-md border border-border bg-secondary p-3 text-center">
+            <div className="rounded-md border border-border bg-secondary/60 p-3 text-center">
               <div className="text-lg font-bold text-foreground">
                 {analysisResult.summary.totalResults}
               </div>
@@ -118,7 +118,7 @@ export const SearchResultsIntelligence = ({
                 Total Results
               </div>
             </div>
-            <div className="rounded-md border border-[hsl(var(--severity-high)/0.3)] bg-[hsl(var(--severity-high)/0.1)] p-3 text-center">
+            <div className="rounded-md border border-[hsl(var(--severity-high)/0.35)] bg-[hsl(var(--severity-high)/0.12)] p-3 text-center">
               <div className="text-lg font-bold text-[hsl(var(--severity-high))]">
                 {analysisResult.summary.highRiskCount}
               </div>
@@ -126,7 +126,7 @@ export const SearchResultsIntelligence = ({
                 High Risk
               </div>
             </div>
-            <div className="rounded-md border border-[hsl(var(--severity-medium)/0.3)] bg-[hsl(var(--severity-medium)/0.1)] p-3 text-center">
+            <div className="rounded-md border border-[hsl(var(--severity-medium)/0.35)] bg-[hsl(var(--severity-medium)/0.12)] p-3 text-center">
               <div className="text-lg font-bold text-[hsl(var(--severity-medium))]">
                 {analysisResult.summary.mediumRiskCount}
               </div>
@@ -134,7 +134,7 @@ export const SearchResultsIntelligence = ({
                 Medium Risk
               </div>
             </div>
-            <div className="rounded-md border border-[hsl(var(--severity-low)/0.3)] bg-[hsl(var(--severity-low)/0.1)] p-3 text-center">
+            <div className="rounded-md border border-[hsl(var(--severity-low)/0.35)] bg-[hsl(var(--severity-low)/0.12)] p-3 text-center">
               <div className="text-lg font-bold text-[hsl(var(--severity-low))]">
                 {analysisResult.summary.lowRiskCount}
               </div>
@@ -142,12 +142,30 @@ export const SearchResultsIntelligence = ({
                 Low Risk
               </div>
             </div>
-            <div className="rounded-md border border-border bg-secondary p-3 text-center">
+            <div className="rounded-md border border-border bg-secondary/60 p-3 text-center">
               <div className="text-lg font-bold text-foreground">
                 {analysisResult.summary.averageConfidence}%
               </div>
               <div className="text-[10px] text-muted-foreground font-mono">
                 Avg Confidence
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-md border border-border/70 bg-secondary/40 p-3">
+            <p className="mb-2 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Risk Distribution</p>
+            <div className="space-y-2 text-[10px] font-mono">
+              <div>
+                <div className="mb-1 flex items-center justify-between"><span>High</span><span>{analysisResult.summary.highRiskCount}</span></div>
+                <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-high))]" style={{ width: `${(analysisResult.summary.highRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
+              </div>
+              <div>
+                <div className="mb-1 flex items-center justify-between"><span>Medium</span><span>{analysisResult.summary.mediumRiskCount}</span></div>
+                <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-medium))]" style={{ width: `${(analysisResult.summary.mediumRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
+              </div>
+              <div>
+                <div className="mb-1 flex items-center justify-between"><span>Low</span><span>{analysisResult.summary.lowRiskCount}</span></div>
+                <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-low))]" style={{ width: `${(analysisResult.summary.lowRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
               </div>
             </div>
           </div>
