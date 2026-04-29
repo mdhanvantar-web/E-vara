@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { Shield, LogOut, History, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
@@ -8,9 +8,9 @@ import MonitoringFeed, { type AlertItem } from "@/components/MonitoringFeed";
 import ToolsPanel from "@/components/ToolsPanel";
 import StatsCards from "@/components/StatsCards";
 import { SearchResultsIntelligence } from "@/components/SearchResultsIntelligence";
-import CyberIntelligencePanel from "@/components/CyberIntelligencePanel";
 import AlertHistory from "@/pages/AlertHistory";
-import CyberIntelligenceSuite from "@/components/CyberIntelligenceSuite";
+import FuturisticThreatConsole from "@/components/FuturisticThreatConsole";
+import CyberDashboardLoader from "@/components/CyberDashboardLoader";
 
 interface DashboardProps {
   onLogout: () => void;
@@ -28,6 +28,12 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
   const [monitoringActive, setMonitoringActive] = useState(false);
   const [monitoringStart, setMonitoringStart] = useState<Date | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [booting, setBooting] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setBooting(false), 5200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const riskScore = useMemo(() => {
     const base = 28;
@@ -67,6 +73,11 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
   }, []);
 
   const isSetupComplete = identity?.faceImage && identity?.fullName;
+
+
+  if (booting) {
+    return <CyberDashboardLoader />;
+  }
 
   if (showHistory) {
     return <AlertHistory alerts={alerts} onBack={() => setShowHistory(false)} />;
@@ -127,12 +138,7 @@ const Dashboard = ({ onLogout }: DashboardProps) => {
           <div className="space-y-4">
             {isSetupComplete ? (
               <>
-                <CyberIntelligenceSuite
-                  fullName={identity!.fullName}
-                  username={identity!.username}
-                  alertCount={alerts.length}
-                  monitoringActive={monitoringActive}
-                />
+                <FuturisticThreatConsole alertCount={alerts.length} />
                 <MonitoringFeed
                   fullName={identity!.fullName}
                   username={identity!.username}
