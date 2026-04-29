@@ -6,17 +6,16 @@ const CyberDashboardLoader = () => {
   const [currentMessage, setCurrentMessage] = useState(0);
 
   const messages = [
-    "Initializing Threat Analysis...",
-    "Scanning Digital Footprint...",
-    "Decrypting Security Protocols...",
-    "Analyzing Threat Intelligence...",
-    "Establishing Secure Connection...",
+    "Initializing System...",
+    "Loading Security Modules...",
+    "Establishing Secure Environment...",
+    "System Ready",
   ];
 
   useEffect(() => {
     const messageInterval = setInterval(() => {
-      setCurrentMessage((prev) => (prev + 1) % messages.length);
-    }, 3500);
+      setCurrentMessage((prev) => Math.min(prev + 1, messages.length - 1));
+    }, 1400);
 
     return () => clearInterval(messageInterval);
   }, []);
@@ -24,8 +23,8 @@ const CyberDashboardLoader = () => {
   useEffect(() => {
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 90) return prev;
-        return prev + Math.random() * 15 + 5;
+        if (prev >= 100) return 100;
+        return prev + Math.random() * 12 + 8;
       });
     }, 800);
 
