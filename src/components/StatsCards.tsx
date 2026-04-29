@@ -70,7 +70,10 @@ const StatsCards = ({ alertCount, scanCount, monitoringActive, monitoringStartTi
             <div className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 transition-all duration-500" style={{ width: `${card.meter}%` }} />
           </div>
         </div>
-      ))}
+        <p className={`text-sm font-semibold ${monitoringActive ? "text-primary monitor-pulse" : "text-muted-foreground"}`}>
+          {monitoringActive ? "ACTIVE" : "STANDBY"}
+        </p>
+      </div>
     </div>
   );
 };
