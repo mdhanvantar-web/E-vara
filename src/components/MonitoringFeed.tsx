@@ -61,6 +61,7 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
     const query = queries[Math.floor(Math.random() * queries.length)] || fullName;
     const template = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
     counterRef.current += 1;
+
     const alert: AlertItem = {
       id: counterRef.current,
       message: template.text.replace("{query}", query),
@@ -74,6 +75,7 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
       onAlertsChange?.(updated);
       return updated;
     });
+
     setTimeout(() => {
       setAlerts((prev) => prev.map((a) => (a.id === alert.id ? { ...a, isNew: false } : a)));
     }, 3000);
@@ -81,7 +83,9 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
 
   const toggleMonitoring = () => {
     if (monitoring) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       intervalRef.current = null;
       setMonitoring(false);
       onMonitoringChange?.(false, null);
@@ -91,13 +95,22 @@ const MonitoringFeed = ({ fullName, username, keywords, onAlertsChange, onMonito
       generateAlert();
       intervalRef.current = setInterval(generateAlert, 7000);
     }
+
+    setMonitoring(true);
+    onMonitoringChange?.(true, new Date());
+    generateAlert();
+    intervalRef.current = setInterval(generateAlert, 8000);
   };
 
   useEffect(() => {
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
   }, []);
+
+  const wrapperClassName = "neon-panel lift-3d rounded-lg border border-border bg-card p-4 sm:p-6";
 
   return (
     <div className="glass-panel scanline-wrap rounded-xl p-4 sm:p-6 neon-3d">

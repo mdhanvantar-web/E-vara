@@ -1,130 +1,187 @@
 # E-Vara — Digital Reputation Protector 🛡️
 
-> An AI-assisted digital identity protection platform designed to detect and respond to online identity misuse — before it's too late.
+> E-Vara is a modern identity monitoring web app that helps users detect possible misuse of their public digital identity signals and investigate them quickly.
 
 ---
 
-## 🔍 What is E-Vara?
+## What E-Vara Does
 
-E-Vara is a proactive digital identity monitoring system that helps individuals detect unauthorized use of their identity online. Instead of reacting after damage is done, E-Vara continuously scans public sources, reverse-searches images, checks breach databases, and alerts users in real time.
+E-Vara combines identity setup, face capture, simulated live monitoring, and structured identity intelligence analysis into one dashboard.
 
----
+Instead of only showing raw search links, E-Vara now converts search-style results into **clear signal cards** with:
+- signal type,
+- detected platform,
+- confidence score,
+- risk level,
+- human-readable reason.
 
-## ✨ Core Features
-
-| Feature | Description |
-|--------|-------------|
-| 🔐 User Authentication | Secure register & login system |
-| 📷 Face-Based Identity Verification | Camera capture for identity confirmation |
-| 🧾 Identity Profile Creation | Store your name, username, and social links |
-| 🌐 OSINT-Based Monitoring | Automated scanning of publicly available data |
-| 🖼️ Reverse Image Search | Integration with Google Lens, Yandex, and Bing |
-| 🚨 Breach Intelligence | Detect leaked data via external APIs |
-| 🔔 24/7 Alert System | Real-time alerts for potential identity mentions |
-| 🔎 Investigation Tools | Direct links to search engines for quick lookup |
-| 🚔 Cybercrime Reporting | Built-in integration to report identity crimes |
-| 📊 Monitoring Dashboard | Centralized interface to track your digital presence |
-| 🌑 Dark Web Monitoring | *(Coming Soon)* |
+This makes triage much faster and easier for users.
 
 ---
 
-## 🛠️ Technology Stack
+## Key Features (Current)
 
-**Frontend**
-- HTML, CSS, JavaScript
+### 1) Authentication & Session
+- User auth flow for accessing the dashboard.
+- Identity data is loaded/saved per user session in the app flow.
 
-**Backend**
-- Node.js, Express.js
+### 2) Face Verification Capture (Experimental)
+- Camera-based face snapshot capture flow.
+- Includes fallback behavior if camera access is unavailable.
+- Includes an explicit disclaimer that face verification is experimental.
 
-**Browser APIs**
-- Camera API (face capture)
+### 3) Identity Profile Setup
+- Capture core identity attributes such as:
+  - full name,
+  - username,
+  - social/profile link,
+  - custom keywords.
 
-**Storage**
-- LocalStorage *(MVP)*
+### 4) Live Monitoring Feed (Simulated)
+- Start/stop monitoring mode.
+- Rolling alert feed with severity levels (low/medium/high).
+- Quick external search links (Google/Bing) for investigation.
+- Real-time-style indicator and timestamped alert entries.
 
-**Deployment**
-- Vercel (frontend) · GitHub (version control)
+### 5) Structured Identity Intelligence Analysis
+- Search-result analysis engine classifies each result into:
+  - **Verified Platform Match**,
+  - **Possible Identity Match**,
+  - **Username Similarity Detected**,
+  - **Public Mention Detected**.
+- Confidence scoring + risk mapping:
+  - 80–100: High Risk,
+  - 50–79: Medium Risk,
+  - 20–49: Low Risk,
+  - <20: Ignored.
+- URL-based platform detection (e.g., Twitter, Instagram, LinkedIn, Facebook, etc.).
+- Deduplication + sorting + top-N limiting for cleaner signals.
+
+### 6) Signal Card UI
+- Each signal is rendered as a clear card with:
+  - type,
+  - platform,
+  - confidence,
+  - risk,
+  - reason,
+  - metadata markers,
+  - source actions (open/copy link).
+
+### 7) Neon/3D UI Treatment
+- Neon ambient background effects.
+- Glass-like neon panel styling.
+- Lift-on-hover 3D card interactions.
+- Neon action button glow styling.
+
+### 8) Dashboard Metrics & History
+- Dashboard summary cards for scan and monitoring status.
+- Alert history view for review of generated alerts.
 
 ---
 
-## 🗺️ Future Roadmap
+## Tech Stack
 
-- [ ] AI-based face matching system
-- [ ] Automated web crawling (compliant sources)
-- [ ] Deepfake detection models
-- [ ] Real-time monitoring infrastructure
-- [ ] Dark web intelligence integration
-- [ ] Reputation risk scoring system
-- [ ] Scalable cloud-based architecture
+This project is currently built as a **React + Vite + TypeScript** frontend app.
 
----
+- **Framework/UI**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS + custom design tokens/effects
+- **UI primitives/icons**: Radix UI, Lucide React
+- **State/data utilities**: React Query (TanStack)
+- **Validation/forms**: React Hook Form, Zod
+- **Optional backend integration path**: Supabase SDK included
 
-## 💡 Value Proposition
-
-- **Early detection** of identity misuse across the web
-- **Unified protection** — one platform for all identity threats
-- **User-friendly** cybersecurity, no technical expertise required
-- **Proactive monitoring** instead of reactive damage control
+> Note: Some monitoring/intelligence data is intentionally mocked/simulated in the MVP UX.
 
 ---
 
-## 🚀 Getting Started
-```bash
-# Clone the repository
-git clone https://github.com/SHAURYASANYAL3/e-vara.git
+## Project Structure
 
-# Navigate into the project
-cd e-vara
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm run dev
-```
-
----
-
-## 📁 Project Structure
-```
-e-vara/
-├── public/          # Static frontend assets
+```text
+E-vara/
+├── public/
 ├── src/
-│   ├── routes/      # Express API routes
-│   ├── controllers/ # Business logic
-│   └── utils/       # Helper functions
-├── index.html       # Main entry point
-├── server.js        # Express server
+│   ├── components/
+│   │   ├── FaceScan.tsx
+│   │   ├── MonitoringFeed.tsx
+│   │   ├── SearchResultsIntelligence.tsx
+│   │   ├── IdentityIntelligenceCard.tsx
+│   │   └── ...
+│   ├── lib/
+│   │   ├── identity-analysis.ts
+│   │   └── ...
+│   ├── pages/
+│   │   └── Dashboard.tsx
+│   └── ...
+├── package.json
 └── README.md
 ```
 
 ---
 
-## 📸 Screenshots
+## Getting Started
 
-> *(Add your dashboard and UI screenshots here)*
+### Prerequisites
+- Node.js 20.x (recommended by project engines)
+- npm
+
+### Run locally
+
+```bash
+git clone https://github.com/SHAURYASANYAL3/E-vara.git
+cd E-vara
+npm install
+npm run dev
+```
+
+### Common scripts
+
+```bash
+npm run dev      # start local dev server
+npm run build    # create production build
+npm run preview  # preview production build locally
+npm run lint     # lint project
+npm run test     # run tests (if present)
+```
 
 ---
 
-## 🤝 Contributing
+## Product Notes
 
-Contributions, issues, and feature requests are welcome!
-Feel free to check the [issues page](https://github.com/SHAURYASANYAL3/e-vara/issues).
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
+- E-Vara is an evolving MVP/prototype.
+- Some feeds and detections are simulated to demonstrate UX and workflows.
+- Use only on identities and data you are authorized to monitor.
 
 ---
 
-## 👤 Author
+## Roadmap Ideas
 
-**Your Name**
+- Real search-provider integration (backend proxy).
+- Persistent alert storage and case management.
+- Expanded platform/entity detection rules.
+- Better confidence calibration and explainability.
+- Optional compliance-focused monitoring modes.
+
+---
+
+## Contributing
+
+Contributions are welcome.
+
+If you want to contribute:
+1. Fork the repo.
+2. Create a feature branch.
+3. Make changes with clear commits.
+4. Open a PR with context and screenshots for UI changes.
+
+---
+
+## License
+
+This project is licensed under the MIT License (see `LICENSE`).
+
+---
+
+## Author
+
 - GitHub: [@SHAURYASANYAL3](https://github.com/SHAURYASANYAL3)
-- LinkedIn: [shaurya-sanyal-7b57a0382]([https://linkedin.com/in/your-profile](https://www.linkedin.com/in/shaurya-sanyal-7b57a0382/))
-
----
-
-> ⚠️ *E-Vara is an MVP. Some features are simulated or in development. Always use responsibly and in compliance with applicable laws.*
+- LinkedIn: [Shaurya Sanyal](https://www.linkedin.com/in/shaurya-sanyal-7b57a0382/)
