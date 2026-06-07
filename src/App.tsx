@@ -16,6 +16,7 @@ import ClientPortal from "./pages/ClientPortal.tsx";
 import IdentityRecords from "./pages/IdentityRecords.tsx";
 import BillingPage from "./pages/Billing.tsx";
 import SupportPage from "./pages/Support.tsx";
+import LegalProtocol from "./pages/LegalProtocol.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ const AppRouter = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/book-demo" element={<BookDemo />} />
+        <Route path="/legal" element={<LegalProtocol />} />
         
         {/* Protected Routes */}
         <Route 

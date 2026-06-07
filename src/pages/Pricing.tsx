@@ -1,119 +1,163 @@
-
-import { Check, Shield, Zap, Globe, Lock } from "lucide-react";
+import { Shield, Zap, Target, Globe, BarChart3, Lock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const PricingPage = () => {
-  const plans = [
+  const tiers = [
     {
       name: "Tactical",
       price: "$0",
-      description: "Basic identity monitoring for personal security",
+      description: "Community-grade OSINT verification",
       features: [
-        "1 Primary Email Target",
-        "Weekly Breach Scans",
-        "Basic Threat Feed",
-        "PDF Security Audit (Basic)",
+        "Single Identity Monitor",
+        "Standard Leak Scanning",
+        "Public Metadata Audit",
+        "Community Support",
+        "7-Day Retention"
       ],
-      icon: <Shield className="h-5 w-5 text-primary" />,
-      cta: "Current Plan",
+      cta: "Initialize Node",
       highlight: false
     },
     {
       name: "Executive",
-      price: "$29",
-      description: "Advanced intelligence for digital high-net-worth",
+      price: "$1,250",
+      period: "/month",
+      description: "Priority protection for high-value targets",
       features: [
-        "5 Identity Targets",
-        "Daily Real-time Scans",
-        "AI-Powered Risk Analysis",
-        "Professional Audit Reports",
-        "SMS/Slack Alerts",
-        "Priority Support"
+        "Up to 5 Identity Monitors",
+        "Dark Web Priority Scanning",
+        "MX/DNS Anomaly Detection",
+        "Executive PDF Dossiers",
+        "Direct Encryption Support",
+        "24-Month Retention"
       ],
-      icon: <Zap className="h-5 w-5 text-yellow-500" />,
-      cta: "Upgrade to Pro",
+      cta: "Secure Protocol",
       highlight: true
     },
     {
-      name: "Enterprise",
+      name: "Omni-Layer",
       price: "Custom",
-      description: "Organizational threat surface management",
+      description: "Enterprise-wide sovereign defense",
       features: [
-        "Unlimited Identity Targets",
-        "Organization Dashboard",
-        "Custom Webhook Integration",
-        "Compliance Reporting (SOC2/GDPR)",
-        "Dedicated Account Lead",
-        "White-label Reports"
+        "Unlimited Identity Monitors",
+        "Custom Intelligence API Access",
+        "Real-time SIEM Integration",
+        "Legal/Compliance Vaults",
+        "Dedicated Intelligence Officer",
+        "Infinite Data Retention"
       ],
-      icon: <Globe className="h-5 w-5 text-blue-500" />,
-      cta: "Contact Intel",
+      cta: "Contact Command",
       highlight: false
     }
   ];
 
   return (
-    <div className="container mx-auto py-12 px-4 animate-fade-in">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-foreground">
-          INTELLIGENCE <span className="text-primary">TIERS</span>
-        </h1>
-        <p className="mt-4 text-muted-foreground text-lg max-w-[700px] mx-auto font-mono">
-          Select the level of operational awareness required for your digital footprint.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {plans.map((plan) => (
-          <Card key={plan.name} className={`relative flex flex-col transition-all duration-300 hover:shadow-primary/10 hover:shadow-2xl border-primary/20 bg-card/50 backdrop-blur-sm ${plan.highlight ? 'ring-2 ring-primary scale-105 z-10' : ''}`}>
-            {plan.highlight && (
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground text-[10px] font-bold uppercase py-1 px-4 rounded-full tracking-widest">
-                Recommended
-              </div>
-            )}
-            <CardHeader>
-              <div className="p-3 w-fit rounded-lg bg-primary/10 mb-4">
-                {plan.icon}
-              </div>
-              <CardTitle className="text-2xl font-mono uppercase tracking-widest">{plan.name}</CardTitle>
-              <div className="flex items-baseline gap-1 mt-2">
-                <span className="text-4xl font-bold">{plan.price}</span>
-                {plan.price !== "Custom" && <span className="text-muted-foreground font-mono">/mo</span>}
-              </div>
-              <CardDescription className="mt-2">{plan.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <ul className="space-y-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm">
-                    <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                    <span className="text-muted-foreground">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                variant={plan.highlight ? "default" : "outline"} 
-                className={`w-full font-bold uppercase tracking-widest text-xs py-6 transition-all ${plan.highlight ? 'hover:scale-105' : 'hover:bg-primary/10'}`}
-              >
-                {plan.cta}
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-
-      <div className="mt-16 rounded-xl border border-primary/10 bg-primary/5 p-8 max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-6">
-        <div className="p-4 bg-primary/10 rounded-full">
-          <Lock className="h-8 w-8 text-primary" />
+    <div className="min-h-screen bg-[#050608] text-white selection:bg-primary/30 font-mono">
+      <nav className="h-20 border-b border-white/5 bg-[#050608]/50 backdrop-blur-xl sticky top-0 z-50">
+        <div className="container mx-auto h-full px-6 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="p-2 bg-primary rounded-lg shadow-[0_0_15px_rgba(255,106,26,0.3)]">
+              <Shield className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-xl font-black tracking-tight uppercase">E-VARA</span>
+          </Link>
+          <Link to="/auth">
+            <Button variant="ghost" className="text-[10px] uppercase font-bold tracking-widest hover:bg-white/5">Sign In</Button>
+          </Link>
         </div>
-        <div className="text-center md:text-left flex-grow">
-          <h3 className="text-xl font-bold uppercase tracking-widest font-mono">Military-Grade Encryption</h3>
-          <p className="text-muted-foreground text-sm mt-1 font-mono">
-            All intelligence data is encrypted at rest and in transit. We do not store plain-text passwords or sensitive identity markers beyond required telemetry.
+      </nav>
+
+      <div className="container mx-auto px-6 py-24">
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+            <Zap className="h-3 w-3" /> Monetization Grid
+          </div>
+          <h1 className="text-6xl font-black tracking-tighter uppercase mb-6 italic">Secure Your Digital Sovereignty</h1>
+          <p className="text-muted-foreground font-body text-lg">
+            High-integrity identity defense priced for high-fidelity assets. No shadow infrastructure. No data harvesting.
           </p>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {tiers.map((tier, i) => (
+            <div 
+              key={i} 
+              className={`relative rounded-[32px] border ${tier.highlight ? 'border-primary bg-primary/[0.03] shadow-[0_0_50px_rgba(255,106,26,0.1)]' : 'border-white/5 bg-[#0A0C12]'} p-8 flex flex-col transition-all hover:translate-y-[-8px]`}
+            >
+              {tier.highlight && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-full">
+                  Recommended Protocol
+                </div>
+              )}
+              
+              <div className="mb-8">
+                <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-muted-foreground mb-4">{tier.name}</h3>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-5xl font-black tracking-tighter">{tier.price}</span>
+                  {tier.period && <span className="text-muted-foreground font-bold">{tier.period}</span>}
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground font-body">{tier.description}</p>
+              </div>
+
+              <div className="space-y-4 mb-10 flex-grow">
+                {tier.features.map((feature, j) => (
+                  <div key={j} className="flex items-center gap-3">
+                    <div className={`h-5 w-5 rounded-full flex items-center justify-center border ${tier.highlight ? 'border-primary/30 bg-primary/10' : 'border-white/10 bg-white/5'}`}>
+                      <Check className={`h-3 w-3 ${tier.highlight ? 'text-primary' : 'text-muted-foreground'}`} />
+                    </div>
+                    <span className="text-xs font-mono text-muted-foreground tracking-tight">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <Link to={tier.name === 'Omni-Layer' ? '/book-demo' : '/auth'} className="w-full">
+                <Button 
+                  className={`w-full py-7 rounded-[16px] font-black uppercase tracking-widest text-xs transition-all ${
+                    tier.highlight 
+                      ? 'bg-primary hover:bg-primary/90 text-white security-orange-glow' 
+                      : 'bg-white/5 hover:bg-white/10 text-white border border-white/10'
+                  }`}
+                >
+                  {tier.cta}
+                </Button>
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-24 max-w-5xl mx-auto grid md:grid-cols-2 gap-12 p-12 rounded-[40px] border border-white/5 bg-white/[0.01]">
+          <div>
+            <h4 className="text-2xl font-black uppercase mb-4">The $15,000 Asset Value</h4>
+            <p className="text-muted-foreground font-body leading-relaxed mb-6">
+              E-VARA isn't just a web app. It's a pre-built, production-hardened security ecosystem. Buying the license gives you 
+              immediate access to the multi-layered OSINT pipeline, client-side encryption modules, and executive report engines.
+            </p>
+            <div className="flex gap-4">
+              <div className="p-3 bg-secondary/10 rounded-xl border border-secondary/20">
+                <Target className="h-6 w-6 text-secondary" />
+              </div>
+              <div>
+                <p className="text-sm font-bold uppercase tracking-widest">Target ROI</p>
+                <p className="text-xs text-muted-foreground mt-1 font-body">12 Active Nodes @ $1.25k/mo = $150k ARR Potential.</p>
+              </div>
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
+               <div className="flex items-center gap-3 mb-2">
+                 <Globe className="h-4 w-4 text-primary" />
+                 <span className="text-[10px] font-bold uppercase tracking-widest">Scale Ready</span>
+               </div>
+               <p className="text-xs text-muted-foreground font-body">Auto-scaled Edge Functions handle thousands of concurrent scans.</p>
+            </div>
+            <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02]">
+               <div className="flex items-center gap-3 mb-2">
+                 <BarChart3 className="h-4 w-4 text-primary" />
+                 <span className="text-[10px] font-bold uppercase tracking-widest">Financial Transparency</span>
+               </div>
+               <p className="text-xs text-muted-foreground font-body">Direct Stripe integration stubs for immediate monetization activation.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

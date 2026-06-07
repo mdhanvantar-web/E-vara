@@ -20,19 +20,19 @@ const Footer = () => (
           <h4 className="font-bold uppercase tracking-widest text-xs mb-6">Core Systems</h4>
           <ul className="space-y-4 text-sm text-muted-foreground font-mono uppercase tracking-tighter">
             <li><Link to="/client-portal" className="hover:text-primary transition-colors">Client Portal</Link></li>
-            <li><button className="hover:text-primary transition-colors">Neural Net Scan</button></li>
-            <li><button className="hover:text-primary transition-colors">Identity Engine</button></li>
-            <li><button className="hover:text-primary transition-colors">Threat Surface</button></li>
-            <li><button className="hover:text-primary transition-colors">API Keys</button></li>
+            <li><Link to="/dashboard" className="hover:text-primary transition-colors">Neural Net Scan</Link></li>
+            <li><Link to="/identity-records" className="hover:text-primary transition-colors">Identity Engine</Link></li>
+            <li><Link to="/client-portal" className="hover:text-primary transition-colors">Threat Surface</Link></li>
+            <li><Link to="/support" className="hover:text-primary transition-colors">API Keys</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-bold uppercase tracking-widest text-xs mb-6">Legal Protocol</h4>
           <ul className="space-y-4 text-sm text-muted-foreground font-mono uppercase tracking-tighter">
-            <li><button className="hover:text-primary transition-colors">Data Privacy</button></li>
-            <li><button className="hover:text-primary transition-colors">Terms of Use</button></li>
-            <li><button className="hover:text-primary transition-colors">Security Ethics</button></li>
-            <li><button className="hover:text-primary transition-colors">Compliance</button></li>
+            <li><Link to="/legal#data-privacy" className="hover:text-primary transition-colors">Data Privacy</Link></li>
+            <li><Link to="/legal#terms" className="hover:text-primary transition-colors">Terms of Use</Link></li>
+            <li><Link to="/legal#ethics" className="hover:text-primary transition-colors">Security Ethics</Link></li>
+            <li><Link to="/legal" className="hover:text-primary transition-colors">Compliance</Link></li>
           </ul>
         </div>
       </div>
