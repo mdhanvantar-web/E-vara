@@ -13,6 +13,9 @@ import AuthPage from "./pages/AuthPage.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import BookDemo from "./pages/BookDemo.tsx";
 import ClientPortal from "./pages/ClientPortal.tsx";
+import IdentityRecords from "./pages/IdentityRecords.tsx";
+import BillingPage from "./pages/Billing.tsx";
+import SupportPage from "./pages/Support.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +47,9 @@ const App = () => {
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/book-demo" element={<BookDemo />} />
             <Route path="/client-portal" element={<ClientPortal />} />
+            <Route path="/identity-records" element={<IdentityRecords />} />
+            <Route path="/billing" element={<BillingPage />} />
+            <Route path="/support" element={<SupportPage />} />
             <Route 
               path="/auth" 
               element={isAuthed ? <Dashboard onLogout={handleLogout} /> : <AuthPage onAuth={handleAuth} />} 

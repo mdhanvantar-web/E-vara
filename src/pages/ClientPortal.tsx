@@ -22,28 +22,28 @@ const ClientPortal = () => {
       title: "Security Dashboard",
       desc: "Access real-time threat monitoring and identity maps.",
       icon: <Terminal className="h-6 w-6 text-primary" />,
-      link: "/auth", // This will redirect to dashboard if authed
+      link: "/auth", 
       color: "border-primary/20 bg-primary/5"
     },
     {
       title: "Identity Records",
       desc: "Manage monitored emails, handles, and digital assets.",
       icon: <Database className="h-6 w-6 text-secondary" />,
-      link: "/auth",
+      link: "/identity-records",
       color: "border-secondary/20 bg-secondary/5"
     },
     {
       title: "Subscription & Billing",
       desc: "Review your operational tier and billing history.",
       icon: <CreditCard className="h-6 w-6 text-yellow-500" />,
-      link: "/pricing",
+      link: "/billing",
       color: "border-yellow-500/20 bg-yellow-500/5"
     },
     {
       title: "Support Protocol",
       desc: "Establish secure contact with your dedicated account lead.",
       icon: <HelpCircle className="h-6 w-6 text-success" />,
-      link: "/book-demo",
+      link: "/support",
       color: "border-success/20 bg-success/5"
     }
   ];
