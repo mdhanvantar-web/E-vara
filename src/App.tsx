@@ -5,8 +5,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CyberDashboardLoader from "@/components/CyberDashboardLoader";
-import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import PricingPage from "./pages/Pricing.tsx";
 
 import LandingPage from "./pages/Landing.tsx";
 import AuthPage from "./pages/AuthPage.tsx";

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Shield, Lock, Fingerprint, Globe, Activity, ChevronRight, Check, Menu, X, ArrowRight, Star, ArrowUpRight, BarChart3, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 
 const LandingPage = () => {
