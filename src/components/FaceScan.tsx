@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { Camera, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 
 interface FaceScanProps {
   onComplete: (imageData: string) => void;
@@ -63,7 +64,9 @@ const FaceScan = ({ onComplete, existingImage }: FaceScanProps) => {
         };
       }
     } catch (error) {
-      console.error("Camera error:", error);
+      toast.error("Camera access denied or unavailable", {
+        description: "Falling back to placeholder verification."
+      });
       // Camera not available — generate a styled placeholder
       const placeholderCanvas = document.createElement("canvas");
       placeholderCanvas.width = 320;
@@ -130,7 +133,9 @@ const FaceScan = ({ onComplete, existingImage }: FaceScanProps) => {
           setCountdown(null);
           setVideoReady(false);
         } else {
-          console.warn("Failed to capture frame");
+          toast.error("Capture Failed", {
+            description: "Unable to extract frame data from video stream."
+          });
           setScanning(false);
         }
         stopStream();
@@ -167,7 +172,6 @@ const FaceScan = ({ onComplete, existingImage }: FaceScanProps) => {
               alt="Captured identity"
               className="w-full rounded-md object-cover"
               style={{ display: "block", maxHeight: "240px" }}
-              onError={(e) => console.error("Image load error:", e)}
             />
             <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-black/60 px-2 py-1">
               <CheckCircle className="h-3 w-3 text-primary" />

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { supabase, isSimulationMode } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { sha256 } from "@/lib/crypto";
@@ -28,23 +28,18 @@ export function useAuth() {
   const { data: user, isLoading: loading } = useQuery({
     queryKey: ["auth-user"],
     queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) throw error;
       return session?.user ?? null;
     },
     staleTime: 1000 * 60 * 5,
   });
 
   // 2. Secure Profile & Tier Query (Source of Truth for Authorization)
-  const { data: profile } = useQuery<UserProfile | null>({
+  const { data: profile, error: profileError } = useQuery<UserProfile | null>({
     queryKey: ["user-profile", user?.id],
     queryFn: async () => {
       if (!user) return null;
-      if (isSimulationMode) return { 
-        tier: 'executive', 
-        security_clearance: 'TOP_SECRET',
-        node_id_stable: `NODE-LOCAL-001`, 
-        billing_status: 'active' 
-      };
 
       const { data, error } = await supabase
         .from('user_profiles')
@@ -52,12 +47,9 @@ export function useAuth() {
         .eq('id', user.id)
         .single();
       
-      if (error) return { 
-        tier: 'tactical', 
-        security_clearance: 'UNCLASSIFIED',
-        node_id_stable: "NODE_STABLE", 
-        billing_status: 'active' 
-      };
+      if (error) {
+         throw new Error("Authorization failed. Please contact support.");
+      }
       return data as UserProfile;
     },
     enabled: !!user,
@@ -68,10 +60,6 @@ export function useAuth() {
     queryKey: ["identity", user?.id],
     queryFn: async () => {
       if (!user) return null;
-      if (isSimulationMode) {
-         const local = localStorage.getItem(`evara-identity-${user.id}`);
-         return local ? JSON.parse(local) : null;
-      }
       
       const { data, error } = await supabase
         .from('monitored_identities')
@@ -81,7 +69,10 @@ export function useAuth() {
         .limit(1)
         .single();
       
-      if (error) return null;
+      if (error) {
+        if (error.code === 'PGRST116') return null; // No identities found
+        throw error;
+      }
       return {
         fullName: data.full_name || "",
         username: data.identity_value_encrypted,
@@ -104,19 +95,16 @@ export function useAuth() {
     // ENFORCE CRYPTOGRAPHIC INTEGRITY: Hash before ingestion
     const hashedEmail = await sha256(info.email);
 
-    if (isSimulationMode) {
-       localStorage.setItem(`evara-identity-${user.id}`, JSON.stringify(info));
-    } else {
-       const { error } = await supabase.from('monitored_identities').upsert({
-         user_id: user.id,
-         identity_type: 'email',
-         identity_value_encrypted: info.email,
-         identity_hash: hashedEmail,
-         full_name: info.fullName,
-         is_active: true
-       });
-       if (error) throw error;
-    }
+    const { error } = await supabase.from('monitored_identities').upsert({
+      user_id: user.id,
+      identity_type: 'email',
+      identity_value_encrypted: info.email,
+      identity_hash: hashedEmail,
+      full_name: info.fullName,
+      is_active: true
+    });
+    
+    if (error) throw error;
     
     queryClient.invalidateQueries({ queryKey: ["identity", user.id] });
   }, [user, queryClient]);
@@ -124,6 +112,7 @@ export function useAuth() {
   return { 
     user, 
     profile,
+    profileError,
     identity,
     loading: loading || loadingIdentity, 
     login: (e: string, p: string) => supabase.auth.signInWithPassword({ email: e, password: p }),

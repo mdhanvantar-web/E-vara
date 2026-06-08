@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { User, ShieldCheck, Loader2 } from "lucide-react";
-import { supabase, isSimulationMode } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { sha256 } from "@/lib/crypto";
@@ -33,15 +33,6 @@ const IdentityForm = ({ onSave, initial }: IdentityFormProps) => {
       // 1. Cryptographic Integrity: Hash before persistence
       const identity_hash = await sha256(email); 
 
-      if (isSimulationMode) {
-        await new Promise(r => setTimeout(r, 1000));
-        toast.info("Synthetic Node Active", {
-          description: "Simulation environment verified. Persisting ephemeral identity."
-        });
-        if (onSave) onSave({ email, username, fullName });
-        return;
-      }
-
       // 2. Real Persistence via useAuth (which now enforces hashing and Postgres RLS)
       await saveIdentity({ email, username, fullName, faceImage: null });
 
@@ -61,8 +52,6 @@ const IdentityForm = ({ onSave, initial }: IdentityFormProps) => {
 
       if (onSave) onSave({ email, username, fullName });
     } catch (err) {
-      const error = err as Error;
-      console.error("Identity registration failed:", error);
       toast.error("Operational Error", {
         description: "Failed to establish identity link. Check network status."
       });

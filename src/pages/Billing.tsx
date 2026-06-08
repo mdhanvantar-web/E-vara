@@ -2,7 +2,6 @@ import { Shield, CreditCard, Check, ArrowUpRight, Download, Clock, Zap, Building
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { isSimulationMode } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
 interface Invoice {
@@ -14,18 +13,11 @@ interface Invoice {
 
 const BillingPage = () => {
   const { profile } = useAuth();
-  
+
   const { data: invoices = [], isLoading } = useQuery<Invoice[], Error>({
     queryKey: ["billing-history"],
     queryFn: async () => {
       // In a real SaaS, this would query a 'billing' table or Stripe API via Edge Function
-      if (isSimulationMode) {
-        await new Promise(r => setTimeout(r, 800));
-        return [
-          { id: "INV-001", date: "Oct 01, 2026", amount: "$29.00", status: "Paid" },
-          { id: "INV-002", date: "Sep 01, 2026", amount: "$29.00", status: "Paid" },
-        ];
-      }
       return []; // Ready for real Stripe integration
     }
   });

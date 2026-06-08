@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Search, ExternalLink, AlertTriangle, Lock, Loader2, ShieldAlert, CheckCircle, FileText } from "lucide-react";
-import { supabase, isSimulationMode } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { generateExecutiveReport } from "@/lib/report-generator";
 
 interface BreachResult {
@@ -50,10 +50,10 @@ const ToolsPanel = ({ identity }: ToolsPanelProps) => {
     setScanResults(null);
 
     const steps = [
-      "Connecting to HaveIBeenPwned API...",
-      "Querying DeHashed Indexed Datasets...",
-      "Analyzing IntelX Dark Web Archives...",
-      "Checking LeakCheck Global Repositories...",
+      "Connecting to Threat Intelligence Network...",
+      "Querying Indexed Datasets...",
+      "Analyzing Dark Web Archives...",
+      "Checking Global Repositories...",
       "Correlating found identity markers...",
       "Generating Security Audit Dossier..."
     ];
@@ -61,39 +61,8 @@ const ToolsPanel = ({ identity }: ToolsPanelProps) => {
     try {
       for (const step of steps) {
         setScanStep(step);
-        await new Promise(r => setTimeout(r, 600 + Math.random() * 800));
-      }
-
-      if (isSimulationMode) {
-        setScanResults({
-          results: [
-            {
-              source: "HaveIBeenPwned",
-              breachName: "LinkedIn 2021",
-              breachDate: "2021-06-22",
-              dataTypes: ["email", "name", "phone", "job_title"],
-              severity: "high",
-              description: "Official LinkedIn data scrap and leak. Metadata suggests high correlation with target profile."
-            },
-            {
-              source: "DeHashed",
-              breachName: "Adobe 2013",
-              breachDate: "2013-10-04",
-              dataTypes: ["email", "password_hint"],
-              severity: "medium",
-              description: "Legacy account credentials detected. Potential for credential stuffing on modern platforms."
-            }
-          ],
-          summary: {
-            totalBreaches: 2,
-            sourcesChecked: 5,
-            highSeverity: 1,
-            mediumSeverity: 1,
-            lowSeverity: 0
-          },
-          scannedAt: new Date().toISOString()
-        });
-        return;
+        // Minimum delay for UI feedback during the backend call
+        await new Promise(r => setTimeout(r, 600));
       }
 
       const { data, error } = await supabase.functions.invoke("breach-check", {
@@ -166,7 +135,7 @@ const ToolsPanel = ({ identity }: ToolsPanelProps) => {
           <h3 className="text-sm font-mono font-semibold text-foreground uppercase tracking-wider">Dark Web Scan</h3>
         </div>
         <p className="mb-4 text-xs text-muted-foreground font-body">
-          Scan multiple breach databases (HaveIBeenPwned, DeHashed, IntelX, LeakCheck, BreachDirectory) for exposed data.
+          Scan multiple breach databases for exposed data.
         </p>
 
         {!identity?.fullName ? (
@@ -204,21 +173,21 @@ const ToolsPanel = ({ identity }: ToolsPanelProps) => {
                 {/* Summary */}
                 <div className="grid grid-cols-3 gap-2">
                   <div className="rounded-md border border-border bg-secondary px-2 py-2 text-center">
-                    <p className="text-lg font-mono font-bold text-foreground">{scanResults.summary.totalBreaches}</p>
+                    <p className="text-lg font-mono font-bold text-foreground">{scanResults.summary?.totalBreaches || 0}</p>
                     <p className="text-[10px] font-mono text-muted-foreground">Breaches</p>
                   </div>
                   <div className="rounded-md border border-border bg-secondary px-2 py-2 text-center">
-                    <p className="text-lg font-mono font-bold text-[hsl(var(--severity-high))]">{scanResults.summary.highSeverity}</p>
+                    <p className="text-lg font-mono font-bold text-[hsl(var(--severity-high))]">{scanResults.summary?.highSeverity || 0}</p>
                     <p className="text-[10px] font-mono text-muted-foreground">High</p>
                   </div>
                   <div className="rounded-md border border-border bg-secondary px-2 py-2 text-center">
-                    <p className="text-lg font-mono font-bold text-foreground">{scanResults.summary.sourcesChecked}</p>
+                    <p className="text-lg font-mono font-bold text-foreground">{scanResults.summary?.sourcesChecked || 0}</p>
                     <p className="text-[10px] font-mono text-muted-foreground">Sources</p>
                   </div>
                 </div>
 
                 {/* Results */}
-                {scanResults.results.length === 0 ? (
+                {!scanResults.results || scanResults.results.length === 0 ? (
                   <div className="rounded-md border border-border bg-secondary px-4 py-4 text-center">
                     <CheckCircle className="mx-auto mb-2 h-5 w-5 text-[hsl(var(--severity-low))]" />
                     <p className="text-xs font-mono text-foreground">No breaches found</p>
@@ -254,7 +223,7 @@ const ToolsPanel = ({ identity }: ToolsPanelProps) => {
                 )}
 
                 <p className="text-[10px] font-mono text-muted-foreground text-center">
-                  Scanned at {new Date(scanResults.scannedAt).toLocaleString()}
+                  Scanned at {new Date(scanResults.scannedAt || new Date()).toLocaleString()}
                 </p>
                 
                 <button

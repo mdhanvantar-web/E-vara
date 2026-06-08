@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CyberDashboardLoader from "@/components/CyberDashboardLoader";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, UserProfile } from "@/hooks/useAuth";
 
 import NotFound from "./pages/NotFound.tsx";
 import PricingPage from "./pages/Pricing.tsx";
@@ -27,8 +27,33 @@ const queryClient = new QueryClient({
   },
 });
 
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+  user: { id: string } | null | undefined;
+  profile: UserProfile | null | undefined;
+  profileError: Error | null;
+  requireActiveBilling?: boolean;
+}
+
+const ProtectedRoute = ({ children, user, profile, profileError, requireActiveBilling = false }: ProtectedRouteProps) => {
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (profileError) {
+    // If we failed to fetch the profile (e.g., db error or no access), force logout or show error
+    return <Navigate to="/auth" replace />;
+  }
+
+  if (requireActiveBilling && profile?.billing_status !== 'active') {
+    return <Navigate to="/billing" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 const AppRouter = () => {
-  const { user, loading, logout } = useAuth();
+  const { user, profile, profileError, loading, logout } = useAuth();
 
   if (loading) return <CyberDashboardLoader />;
 
@@ -43,23 +68,43 @@ const AppRouter = () => {
         {/* Protected Routes */}
         <Route 
           path="/client-portal" 
-          element={user ? <ClientPortal /> : <Navigate to="/auth" />} 
+          element={
+            <ProtectedRoute user={user} profile={profile} profileError={profileError} requireActiveBilling={true}>
+              <ClientPortal />
+            </ProtectedRoute>
+          } 
         />
         <Route 
           path="/identity-records" 
-          element={user ? <IdentityRecords /> : <Navigate to="/auth" />} 
+          element={
+            <ProtectedRoute user={user} profile={profile} profileError={profileError} requireActiveBilling={true}>
+              <IdentityRecords />
+            </ProtectedRoute>
+          } 
         />
         <Route 
           path="/billing" 
-          element={user ? <BillingPage /> : <Navigate to="/auth" />} 
+          element={
+            <ProtectedRoute user={user} profile={profile} profileError={profileError}>
+              <BillingPage />
+            </ProtectedRoute>
+          } 
         />
         <Route 
           path="/support" 
-          element={user ? <SupportPage /> : <Navigate to="/auth" />} 
+          element={
+            <ProtectedRoute user={user} profile={profile} profileError={profileError}>
+              <SupportPage />
+            </ProtectedRoute>
+          } 
         />
         <Route 
           path="/dashboard" 
-          element={user ? <Dashboard onLogout={logout} /> : <Navigate to="/auth" />} 
+          element={
+            <ProtectedRoute user={user} profile={profile} profileError={profileError} requireActiveBilling={true}>
+              <Dashboard onLogout={logout} />
+            </ProtectedRoute>
+          } 
         />
 
         {/* Auth Route */}

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase, isSimulationMode } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 
 interface MonitoredRecord {
   id: string;
@@ -21,14 +21,6 @@ const IdentityRecords = () => {
   const { data: records = [], isLoading } = useQuery<MonitoredRecord[], Error>({
     queryKey: ["monitored-records", user?.id],
     queryFn: async () => {
-      if (isSimulationMode) {
-        return [
-          { id: "1", type: "email", value: user?.email || "target@e-vara.io", status: "Active", risk: "Low" },
-          { id: "2", type: "username", value: "@exec_alpha_01", status: "Monitoring", risk: "Medium" },
-          { id: "3", type: "domain", value: "vault.executive-assets.com", status: "Active", risk: "Low" },
-        ];
-      }
-
       const { data, error } = await supabase
         .from('monitored_identities')
         .select('id, identity_type, identity_value_encrypted, is_active, risk_score')
@@ -48,7 +40,6 @@ const IdentityRecords = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      if (isSimulationMode) return;
       const { error } = await supabase.from('monitored_identities').delete().eq('id', id);
       if (error) throw new Error(error.message);
     },

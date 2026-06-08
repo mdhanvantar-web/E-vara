@@ -2,16 +2,11 @@ import { useState } from "react";
 import { Search, Loader2, AlertCircle } from "lucide-react";
 import { analyzeSearchResults } from "@/lib/identity-analysis";
 import { IdentityIntelligenceCard } from "./IdentityIntelligenceCard";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SearchResultsIntelligenceProps {
   fullName: string;
   username: string;
-}
-
-interface SearchResult {
-  title: string;
-  snippet: string;
-  link: string;
 }
 
 export const SearchResultsIntelligence = ({
@@ -34,18 +29,22 @@ export const SearchResultsIntelligence = ({
     setAnalysisResult(null);
 
     try {
-      // In production, call your backend API to perform the search
-      // For now, we'll simulate the search with mock data
-      const mockResults: SearchResult[] = await fetchSearchResults(
-        fullName,
-        username,
-        searchEngine
-      );
+      // Call the secure Supabase Edge Function for OSINT analysis
+      const { data, error: funcError } = await supabase.functions.invoke('osint-search', {
+        body: { fullName, username, engine: searchEngine }
+      });
 
-      const result = analyzeSearchResults(mockResults, fullName, username, 10);
+      if (funcError) {
+        throw new Error(funcError.message || "Threat Intelligence network unreachable.");
+      }
+
+      // If the endpoint is not fully implemented or returns no data, handle it gracefully
+      const results = data?.results || [];
+      const result = analyzeSearchResults(results, fullName, username, 10);
       setAnalysisResult(result);
+      
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Search failed. Please try again.";
+      const errorMessage = err instanceof Error ? err.message : "Analysis failed. Secure connection dropped.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -96,7 +95,7 @@ export const SearchResultsIntelligence = ({
           <AlertCircle className="h-5 w-5 text-[hsl(var(--severity-high))] shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-semibold text-[hsl(var(--severity-high))]">
-              Error
+              Connection Error
             </p>
             <p className="text-xs text-[hsl(var(--severity-high))] mt-1">
               {error}
@@ -107,7 +106,7 @@ export const SearchResultsIntelligence = ({
 
       {/* Results */}
       {analysisResult && (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-fade-in">
           {/* Summary Stats + Risk Heatmap */}
           <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
             <div className="rounded-md border border-border bg-secondary/60 p-3 text-center">
@@ -152,23 +151,25 @@ export const SearchResultsIntelligence = ({
             </div>
           </div>
 
-          <div className="rounded-md border border-border/70 bg-secondary/40 p-3">
-            <p className="mb-2 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Risk Distribution</p>
-            <div className="space-y-2 text-[10px] font-mono">
-              <div>
-                <div className="mb-1 flex items-center justify-between"><span>High</span><span>{analysisResult.summary.highRiskCount}</span></div>
-                <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-high))]" style={{ width: `${(analysisResult.summary.highRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
-              </div>
-              <div>
-                <div className="mb-1 flex items-center justify-between"><span>Medium</span><span>{analysisResult.summary.mediumRiskCount}</span></div>
-                <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-medium))]" style={{ width: `${(analysisResult.summary.mediumRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
-              </div>
-              <div>
-                <div className="mb-1 flex items-center justify-between"><span>Low</span><span>{analysisResult.summary.lowRiskCount}</span></div>
-                <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-low))]" style={{ width: `${(analysisResult.summary.lowRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
+          {analysisResult.summary.totalResults > 0 && (
+            <div className="rounded-md border border-border/70 bg-secondary/40 p-3">
+              <p className="mb-2 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">Risk Distribution</p>
+              <div className="space-y-2 text-[10px] font-mono">
+                <div>
+                  <div className="mb-1 flex items-center justify-between"><span>High</span><span>{analysisResult.summary.highRiskCount}</span></div>
+                  <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-high))]" style={{ width: `${(analysisResult.summary.highRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
+                </div>
+                <div>
+                  <div className="mb-1 flex items-center justify-between"><span>Medium</span><span>{analysisResult.summary.mediumRiskCount}</span></div>
+                  <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-medium))]" style={{ width: `${(analysisResult.summary.mediumRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
+                </div>
+                <div>
+                  <div className="mb-1 flex items-center justify-between"><span>Low</span><span>{analysisResult.summary.lowRiskCount}</span></div>
+                  <div className="h-1.5 rounded bg-secondary"><div className="h-1.5 rounded bg-[hsl(var(--severity-low))]" style={{ width: `${(analysisResult.summary.lowRiskCount / Math.max(analysisResult.summary.totalResults,1))*100}%` }} /></div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Signals */}
           <div>
@@ -176,9 +177,9 @@ export const SearchResultsIntelligence = ({
               IDENTITY SIGNALS ({analysisResult.signals.length})
             </h4>
             {analysisResult.signals.length === 0 ? (
-              <div className="rounded-md border border-border bg-secondary p-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No significant signals detected
+              <div className="rounded-md border border-[hsl(var(--severity-low)/0.3)] bg-[hsl(var(--severity-low)/0.1)] p-6 text-center">
+                <p className="text-sm text-[hsl(var(--severity-low))]">
+                  System Secure. No anomalous signals detected in surface web sweep.
                 </p>
               </div>
             ) : (
@@ -198,10 +199,10 @@ export const SearchResultsIntelligence = ({
       )}
 
       {/* Placeholder */}
-      {!analysisResult && !loading && (
+      {!analysisResult && !loading && !error && (
         <div className="rounded-md border border-border bg-secondary p-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Click "Analyze Results" to scan for identity mentions
+            Awaiting target parameters for OSINT sweep.
           </p>
         </div>
       )}
@@ -209,48 +210,3 @@ export const SearchResultsIntelligence = ({
   );
 };
 
-// Mock search implementation (replace with real API call)
-async function fetchSearchResults(
-  fullName: string,
-  username: string,
-  engine: "google" | "bing"
-): Promise<SearchResult[]> {
-  void engine;
-
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  // Mock search results
-  return [
-    {
-      title: `${username} - Twitter Profile`,
-      snippet: `The latest tweets from ${username}. Follow ${fullName} on Twitter for updates and insights.`,
-      link: `https://twitter.com/${username}`,
-    },
-    {
-      title: `${fullName} | LinkedIn Profile`,
-      snippet: `Professional profile of ${fullName}. Software engineer with 5+ years of experience...`,
-      link: `https://linkedin.com/in/${username}`,
-    },
-    {
-      title: `${username} on Instagram`,
-      snippet: `@${username} shared a photo: Enjoying the beautiful weather...`,
-      link: `https://instagram.com/${username}`,
-    },
-    {
-      title: `GitHub - ${username}`,
-      snippet: `GitHub profile for ${username}. Repositories and contributions in various technologies.`,
-      link: `https://github.com/${username}`,
-    },
-    {
-      title: `${fullName} mentioned in article`,
-      snippet: `An interesting article mentioning ${fullName} and his contributions to the tech industry...`,
-      link: `https://techblog.example.com/article-${username}`,
-    },
-    {
-      title: `${username} - Medium Blog`,
-      snippet: `Latest articles by ${username} on Medium. Technical writing about web development.`,
-      link: `https://medium.com/@${username}`,
-    },
-  ];
-}
