@@ -19,11 +19,11 @@ const Navbar = ({ isScrolled, mobileMenuOpen, setMobileMenuOpen }: NavbarProps) 
       </div>
 
       <div className="hidden md:flex items-center gap-10">
-        {["Solutions", "Threat Detection", "Pricing", "Resources", "Docs"].map((item) => (
-          <button key={item} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider font-mono">
-            {item}
-          </button>
-        ))}
+        <Link to="/solutions" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider font-mono">Solutions</Link>
+        <Link to="/threat-detection" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider font-mono">Threat Detection</Link>
+        <Link to="/pricing" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider font-mono">Pricing</Link>
+        <Link to="/resources" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider font-mono">Resources</Link>
+        <Link to="/docs" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors uppercase tracking-wider font-mono">Docs</Link>
       </div>
 
       <div className="flex items-center gap-4">

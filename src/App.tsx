@@ -9,6 +9,10 @@ import { useAuth, UserProfile } from "@/hooks/useAuth";
 
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const PricingPage = lazy(() => import("./pages/Pricing.tsx"));
+const SolutionsPage = lazy(() => import("./pages/Solutions.tsx"));
+const ThreatDetectionPage = lazy(() => import("./pages/ThreatDetection.tsx"));
+const ResourcesPage = lazy(() => import("./pages/Resources.tsx"));
+const DocsPage = lazy(() => import("./pages/Docs.tsx"));
 const LandingPage = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/AuthPage.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
@@ -64,6 +68,10 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/solutions" element={<SolutionsPage />} />
+          <Route path="/threat-detection" element={<ThreatDetectionPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/docs" element={<DocsPage />} />
           <Route path="/book-demo" element={<BookDemo />} />
           <Route path="/legal" element={<LegalProtocol />} />
           

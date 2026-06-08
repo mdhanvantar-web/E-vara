@@ -1,14 +1,32 @@
+import { useState, useEffect } from "react";
 import { Shield, Zap, Target, Globe, BarChart3, Lock, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useSEO } from "@/hooks/useSEO";
 
 const PricingPage = () => {
+  const [countryCode, setCountryCode] = useState<string | null>(null);
+  const [loadingPrice, setLoadingPrice] = useState(true);
+
   useSEO({
     title: "Pricing & Plans",
     description: "View the monetization grid and secure your digital sovereignty with E-VARA's enterprise pricing tiers.",
     canonicalUrl: "https://e-vara.vercel.app/pricing"
   });
+
+  useEffect(() => {
+    fetch('https://get.geojs.io/v1/ip/country.json')
+      .then(res => res.json())
+      .then(data => {
+        setCountryCode(data.country);
+        setLoadingPrice(false);
+      })
+      .catch(() => {
+        setLoadingPrice(false);
+      });
+  }, []);
+
+  const isIndia = countryCode === "IN";
 
   const tiers = [
     {
@@ -27,7 +45,7 @@ const PricingPage = () => {
     },
     {
       name: "Executive",
-      price: "$1,250",
+      price: isIndia ? "$499" : "$1,250",
       period: "/month",
       description: "Priority protection for high-value targets",
       features: [
@@ -100,7 +118,7 @@ const PricingPage = () => {
               <div className="mb-8">
                 <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-muted-foreground mb-4">{tier.name}</h3>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-black tracking-tighter">{tier.price}</span>
+                  <span className={`text-5xl font-black tracking-tighter ${loadingPrice ? 'opacity-0' : 'opacity-100 transition-opacity'}`}>{tier.price}</span>
                   {tier.period && <span className="text-muted-foreground font-bold">{tier.period}</span>}
                 </div>
                 <p className="mt-4 text-sm text-muted-foreground font-body">{tier.description}</p>

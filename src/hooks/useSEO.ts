@@ -21,10 +21,10 @@ export function useSEO({ title, description, canonicalUrl }: SEOProps) {
     metaDescription.setAttribute('content', description);
 
     // 3. Update Open Graph Title & Description
-    let ogTitle = document.querySelector('meta[property="og:title"]');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
     if (ogTitle) ogTitle.setAttribute('content', `${title} | E-VARA`);
 
-    let ogDesc = document.querySelector('meta[property="og:description"]');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', description);
 
     // 4. Update Canonical URL
