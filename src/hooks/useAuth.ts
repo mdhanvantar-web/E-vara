@@ -42,6 +42,9 @@ export function useAuth() {
   const { data: user, isLoading: loading } = useQuery({
     queryKey: ["auth-user"],
     queryFn: async () => {
+      if (localStorage.getItem('e_vara_demo_auth') === 'true') {
+        return DEMO_USER;
+      }
       return runResilient(
         async () => {
           const { data: { session }, error } = await supabase.auth.getSession();
@@ -49,7 +52,7 @@ export function useAuth() {
           return session?.user ?? null;
         },
         "e_vara_session",
-        localStorage.getItem('e_vara_demo_auth') === 'true' ? DEMO_USER : null
+        null
       );
     },
     staleTime: 1000 * 60 * 5,
