@@ -189,8 +189,19 @@ export function useAuth() {
     identity,
     loading: loading || loadingIdentity, 
     login: async (e: string, p: string) => {
+      // If already in demo mode, skip the long timeout and instantly login
+      if (localStorage.getItem('e_vara_demo_auth') === 'true') {
+        await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+        return { data: { user: DEMO_USER, session: {} }, error: null };
+      }
+
       try {
-        const res = await supabase.auth.signInWithPassword({ email: e, password: p });
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
+        const res = await Promise.race([
+          supabase.auth.signInWithPassword({ email: e, password: p }),
+          timeoutPromise
+        ]) as any;
+        
         if (res.error) throw res.error;
         localStorage.setItem('e_vara_demo_auth', 'false');
         return res;
@@ -202,8 +213,18 @@ export function useAuth() {
       }
     },
     register: async (e: string, p: string) => {
+      if (localStorage.getItem('e_vara_demo_auth') === 'true') {
+        await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+        return { data: { user: DEMO_USER, session: {} }, error: null };
+      }
+
       try {
-        const res = await supabase.auth.signUp({ email: e, password: p });
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
+        const res = await Promise.race([
+          supabase.auth.signUp({ email: e, password: p }),
+          timeoutPromise
+        ]) as any;
+        
         if (res.error) throw res.error;
         localStorage.setItem('e_vara_demo_auth', 'false');
         return res;
