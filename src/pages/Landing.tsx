@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Hero from "@/components/v2/Hero";
 import Workflow from "@/components/v2/Workflow";
 import DashboardMockup from "@/components/v2/DashboardMockup";
@@ -12,24 +13,27 @@ gsap.registerPlugin(ScrollTrigger);
 const PremiumNavbar = () => (
   <nav className="fixed top-0 left-0 right-0 z-[100] bg-black/50 backdrop-blur-2xl border-b border-white/5">
     <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-      <div className="flex items-center gap-3">
+      <Link to="/" className="flex items-center gap-3">
         <Shield className="w-8 h-8 text-[#007AFF]" />
         <span className="text-xl font-bold tracking-tighter text-white uppercase italic">E-vara</span>
-      </div>
+      </Link>
       <div className="hidden md:flex items-center gap-8">
-        {["Technology", "Solutions", "Investors", "Security"].map((item) => (
-          <a key={item} href={`#${item.toLowerCase()}`} className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 hover:text-[#007AFF] transition-colors">
-            {item}
-          </a>
-        ))}
+        <Link to="/solutions" className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 hover:text-[#007AFF] transition-colors">Solutions</Link>
+        <Link to="/pricing" className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 hover:text-[#007AFF] transition-colors">Pricing</Link>
+        <Link to="/docs" className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 hover:text-[#007AFF] transition-colors">Documentation</Link>
+        <Link to="/resources" className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 hover:text-[#007AFF] transition-colors">Resources</Link>
       </div>
       <div className="flex items-center gap-4">
-        <button className="px-6 py-2.5 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[#007AFF] hover:text-white transition-all">
-          Connect Identity
-        </button>
-        <button className="px-6 py-2.5 rounded-full bg-[#007AFF] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
-          Launch Console
-        </button>
+        <Link to="/book-demo">
+          <button className="hidden sm:block px-6 py-2.5 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[#007AFF] hover:text-white transition-all">
+            Book Demo
+          </button>
+        </Link>
+        <Link to="/auth">
+          <button className="px-6 py-2.5 rounded-full bg-[#007AFF] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+            Login / Register
+          </button>
+        </Link>
       </div>
     </div>
   </nav>
@@ -164,17 +168,19 @@ const LandingPage = () => {
             <div>
                <p className="text-xs font-mono text-white mb-8 uppercase tracking-[0.2em]">Platform</p>
                <ul className="space-y-4">
-                  {["Technology", "Governance", "API", "Documentation"].map(item => (
-                    <li key={item}><a href="#" className="text-sm text-white/40 hover:text-white transition-colors">{item}</a></li>
-                  ))}
+                  <li><Link to="/solutions" className="text-sm text-white/40 hover:text-white transition-colors">Solutions</Link></li>
+                  <li><Link to="/pricing" className="text-sm text-white/40 hover:text-white transition-colors">Pricing</Link></li>
+                  <li><Link to="/resources" className="text-sm text-white/40 hover:text-white transition-colors">Resources</Link></li>
+                  <li><Link to="/docs" className="text-sm text-white/40 hover:text-white transition-colors">Documentation</Link></li>
                </ul>
             </div>
             <div>
                <p className="text-xs font-mono text-white mb-8 uppercase tracking-[0.2em]">Company</p>
                <ul className="space-y-4">
-                  {["Investors", "Careers", "Security", "Contact"].map(item => (
-                    <li key={item}><a href="#" className="text-sm text-white/40 hover:text-white transition-colors">{item}</a></li>
-                  ))}
+                  <li><Link to="/auth" className="text-sm text-white/40 hover:text-white transition-colors">Console Login</Link></li>
+                  <li><Link to="/book-demo" className="text-sm text-white/40 hover:text-white transition-colors">Ask Demo</Link></li>
+                  <li><a href="#security" className="text-sm text-white/40 hover:text-white transition-colors">Security</a></li>
+                  <li><Link to="/support" className="text-sm text-white/40 hover:text-white transition-colors">Contact Support</Link></li>
                </ul>
             </div>
          </div>

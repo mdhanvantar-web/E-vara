@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ChevronRight, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 import CyberGlobe from "./CyberGlobe";
 
 const Hero = () => {
@@ -49,12 +50,16 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <button className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm uppercase tracking-widest hover:bg-electric-blue hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-                Request Demo <ChevronRight className="w-4 h-4" />
-              </button>
-              <button className="px-8 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white font-bold text-sm uppercase tracking-widest hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2">
-                <Play className="w-3 h-3 fill-white" /> Explore Technology
-              </button>
+              <Link to="/book-demo">
+                <button className="px-8 py-4 rounded-full bg-white text-black font-bold text-sm uppercase tracking-widest hover:bg-electric-blue hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
+                  Request Demo <ChevronRight className="w-4 h-4" />
+                </button>
+              </Link>
+              <Link to="/threat-detection">
+                <button className="px-8 py-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-white font-bold text-sm uppercase tracking-widest hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2">
+                  <Play className="w-3 h-3 fill-white" /> Explore Technology
+                </button>
+              </Link>
             </motion.div>
 
             {/* Stats Row */}
