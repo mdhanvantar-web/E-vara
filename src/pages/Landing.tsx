@@ -7,6 +7,7 @@ import InvestorSection from "@/components/v2/InvestorSection";
 import { Shield } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useSEO } from "@/hooks/useSEO";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +41,12 @@ const PremiumNavbar = () => (
 );
 
 const LandingPage = () => {
+  useSEO({
+    title: "Autonomous Identity Defense",
+    description: "E-VARA provides military-grade cyber intelligence and autonomous identity monitoring for high-value targets, protecting against deepfakes and digital surface threats.",
+    canonicalUrl: "https://e-vara.vercel.app/"
+  });
+
   useEffect(() => {
     console.log("E-VARA V2 REDESIGN LOADED");
     gsap.utils.toArray<HTMLElement>("section").forEach((section) => {

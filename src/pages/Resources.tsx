@@ -60,7 +60,7 @@ const ResourcesPage = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-24">
           {resources.map((item, i) => (
             <div key={i} className="flex flex-col p-6 rounded-2xl border border-white/5 bg-[#0A0C12] hover:border-primary/30 transition-colors">
               <div className="flex items-center justify-between mb-6">
@@ -76,6 +76,30 @@ const ResourcesPage = () => {
               </Button>
             </div>
           ))}
+        </div>
+
+        {/* SEO Content Cluster / Security Insights */}
+        <div className="max-w-4xl mx-auto space-y-16 border-t border-white/5 pt-20">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-black uppercase italic tracking-tighter">Digital Footprint & OSINT Intelligence</h2>
+            <p className="text-muted-foreground font-body leading-relaxed">
+              Open-Source Intelligence (OSINT) is the foundation of modern cybersecurity defense. By mapping your digital footprint across public databases, dark web forums, and social graph APIs, E-VARA neutralizes threats before they materialize. Executive security is no longer confined to physical space; it requires autonomous monitoring of email exposures, DNS metadata, and identity fragments.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-3xl font-black uppercase italic tracking-tighter">Executive Identity Protection</h2>
+            <p className="text-muted-foreground font-body leading-relaxed">
+              High-net-worth individuals and corporate executives face targeted social engineering and deepfake campaigns. E-VARA’s identity protection suite utilizes cryptographic hashing to verify breach data without ever exposing personally identifiable information (PII) to the cloud. This Zero-Knowledge Architecture ensures compliance while delivering enterprise-grade threat surface mapping.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-3xl font-black uppercase italic tracking-tighter">Breach Awareness & Proactive Defense</h2>
+            <p className="text-muted-foreground font-body leading-relaxed">
+              Reactive security is obsolete. Modern cyber defense requires an active intelligence engine capable of scanning millions of records per second. By cross-referencing compromised credential databases and historical leaks, organizations can enforce credential rotation protocols before threat actors can exploit the data. E-VARA transforms reactive IT logs into proactive intelligence dossiers.
+            </p>
+          </div>
         </div>
       </div>
     </div>
