@@ -40,9 +40,10 @@ const IdentityForm = ({ onSave, initial }: IdentityFormProps) => {
       let scanResult = null;
       let scanError = null;
       try {
+        const hashedEmail = await sha256(email);
         const res = await supabase.functions.invoke('breach-check', {
           body: { 
-            identityValue: email, 
+            identityValue: hashedEmail, 
             userId: user.id 
           }
         });

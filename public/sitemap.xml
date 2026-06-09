@@ -11,6 +11,26 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://e-vara.vercel.app/solutions</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://e-vara.vercel.app/threat-detection</loc>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://e-vara.vercel.app/resources</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://e-vara.vercel.app/docs</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://e-vara.vercel.app/book-demo</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>

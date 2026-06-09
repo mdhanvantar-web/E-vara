@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Search, ExternalLink, AlertTriangle, Lock, Loader2, ShieldAlert, CheckCircle, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { generateExecutiveReport } from "@/lib/report-generator";
+import { sha256 } from "@/lib/crypto";
 
 interface BreachResult {
   source: string;
@@ -65,11 +66,12 @@ const ToolsPanel = ({ identity }: ToolsPanelProps) => {
         await new Promise(r => setTimeout(r, 600));
       }
 
+      const emailToHash = identity.fullName.toLowerCase().replace(/\s/g, ".") + "@example.com";
+      const hashedEmail = await sha256(emailToHash);
+
       const { data, error } = await supabase.functions.invoke("breach-check", {
         body: {
-          email: identity.fullName.toLowerCase().replace(/\s/g, ".") + "@example.com",
-          username: identity.username || identity.fullName.toLowerCase().replace(/\s/g, ""),
-          fullName: identity.fullName,
+          identityHash: hashedEmail
         },
       });
       let scanData = data as ScanResponse | null;

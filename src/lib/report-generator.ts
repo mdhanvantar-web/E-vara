@@ -10,6 +10,7 @@ export interface ReportIdentity {
 export interface ReportScanResults {
   summary: {
     totalBreaches: number;
+    sourcesChecked: number;
     highSeverity: number;
     mediumSeverity: number;
     lowSeverity: number;
@@ -20,6 +21,7 @@ export interface ReportScanResults {
     severity: string;
     dataTypes: string[];
     description: string;
+    breachDate: string;
   }[];
 }
 
