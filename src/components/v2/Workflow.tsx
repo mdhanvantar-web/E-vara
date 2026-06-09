@@ -29,7 +29,7 @@ const Workflow = () => {
                     <step.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-bold text-white mb-2 uppercase tracking-widest">{step.title}</h4>
+                    <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-widest">{step.title}</h3>
                     <p className="text-white/40 leading-relaxed max-w-sm">{step.desc}</p>
                   </div>
                 </motion.div>

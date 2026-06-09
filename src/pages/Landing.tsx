@@ -24,13 +24,13 @@ const PremiumNavbar = () => (
         <Link to="/resources" className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 hover:text-[#007AFF] transition-colors">Resources</Link>
       </div>
       <div className="flex items-center gap-4">
-        <Link to="/book-demo">
-          <button className="hidden sm:block px-6 py-2.5 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest hover:bg-[#007AFF] hover:text-white transition-all">
+        <Link to="/book-demo" aria-label="Book Demo">
+          <button className="hidden sm:block px-6 py-2.5 rounded-full bg-white text-black text-xs font-bold uppercase tracking-widest hover:bg-[#007AFF] hover:text-white transition-all">
             Book Demo
           </button>
         </Link>
-        <Link to="/auth">
-          <button className="px-6 py-2.5 rounded-full bg-[#007AFF] text-white text-[10px] font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+        <Link to="/auth" aria-label="Login / Register">
+          <button className="px-6 py-2.5 rounded-full bg-[#007AFF] text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
             Login / Register
           </button>
         </Link>
@@ -155,40 +155,40 @@ const LandingPage = () => {
                   <Shield className="w-10 h-10 text-[#007AFF]" />
                   <span className="text-3xl font-bold tracking-tighter text-white uppercase italic">E-vara</span>
                </div>
-               <p className="text-white/40 max-w-md font-light leading-relaxed mb-12">
+               <p className="text-white/60 max-w-md font-light leading-relaxed mb-12">
                   Building the world's most advanced autonomous digital reputation defense platform. 
                   Protecting digital sovereignty in the age of synthetic media.
                </p>
                <div className="flex gap-6">
                   {["X", "LinkedIn", "GitHub", "Discord"].map(social => (
-                    <a key={social} href="#" className="text-xs font-mono text-white/20 hover:text-[#007AFF] transition-colors uppercase tracking-widest">{social}</a>
+                    <a key={social} href="#" className="text-xs font-mono text-white/50 hover:text-[#007AFF] transition-colors uppercase tracking-widest">{social}</a>
                   ))}
                </div>
             </div>
             <div>
                <p className="text-xs font-mono text-white mb-8 uppercase tracking-[0.2em]">Platform</p>
                <ul className="space-y-4">
-                  <li><Link to="/solutions" className="text-sm text-white/40 hover:text-white transition-colors">Solutions</Link></li>
-                  <li><Link to="/pricing" className="text-sm text-white/40 hover:text-white transition-colors">Pricing</Link></li>
-                  <li><Link to="/resources" className="text-sm text-white/40 hover:text-white transition-colors">Resources</Link></li>
-                  <li><Link to="/docs" className="text-sm text-white/40 hover:text-white transition-colors">Documentation</Link></li>
+                  <li><Link to="/solutions" className="text-sm text-white/60 hover:text-white transition-colors">Solutions</Link></li>
+                  <li><Link to="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link></li>
+                  <li><Link to="/resources" className="text-sm text-white/60 hover:text-white transition-colors">Resources</Link></li>
+                  <li><Link to="/docs" className="text-sm text-white/60 hover:text-white transition-colors">Documentation</Link></li>
                </ul>
             </div>
             <div>
                <p className="text-xs font-mono text-white mb-8 uppercase tracking-[0.2em]">Company</p>
                <ul className="space-y-4">
-                  <li><Link to="/auth" className="text-sm text-white/40 hover:text-white transition-colors">Console Login</Link></li>
-                  <li><Link to="/book-demo" className="text-sm text-white/40 hover:text-white transition-colors">Ask Demo</Link></li>
-                  <li><a href="#security" className="text-sm text-white/40 hover:text-white transition-colors">Security</a></li>
-                  <li><Link to="/support" className="text-sm text-white/40 hover:text-white transition-colors">Contact Support</Link></li>
+                  <li><Link to="/auth" className="text-sm text-white/60 hover:text-white transition-colors">Console Login</Link></li>
+                  <li><Link to="/book-demo" className="text-sm text-white/60 hover:text-white transition-colors">Ask Demo</Link></li>
+                  <li><a href="#security" className="text-sm text-white/60 hover:text-white transition-colors">Security</a></li>
+                  <li><Link to="/support" className="text-sm text-white/60 hover:text-white transition-colors">Contact Support</Link></li>
                </ul>
             </div>
          </div>
          <div className="container mx-auto px-6 mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">© 2026 E-VARA SECURITY SYSTEMS. ALL RIGHTS RESERVED.</p>
+            <p className="text-[10px] font-mono text-white/50 uppercase tracking-[0.3em]">© 2026 E-VARA SECURITY SYSTEMS. ALL RIGHTS RESERVED.</p>
             <div className="flex gap-10">
-               <a href="#" className="text-[10px] font-mono text-white/10 hover:text-white uppercase">Privacy_Policy</a>
-               <a href="#" className="text-[10px] font-mono text-white/10 hover:text-white uppercase">Terms_of_Service</a>
+               <a href="#" className="text-[10px] font-mono text-white/40 hover:text-white uppercase">Privacy_Policy</a>
+               <a href="#" className="text-[10px] font-mono text-white/40 hover:text-white uppercase">Terms_of_Service</a>
             </div>
          </div>
       </footer>
