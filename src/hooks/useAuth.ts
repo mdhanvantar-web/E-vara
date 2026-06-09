@@ -91,7 +91,7 @@ export function useAuth() {
           } catch (e) { /* ignore */ }
         }
         return {
-          fullName: "Demo User",
+          fullName: "Admin User",
           username: DEMO_USER.email,
           email: DEMO_USER.email,
           faceImage: null
@@ -140,7 +140,7 @@ export function useAuth() {
 
     if (user.id === DEMO_USER.id) {
       localStorage.setItem('e_vara_demo_identity', JSON.stringify(info));
-      toast.success("Identity saved (Demo Mode)");
+      toast.success("Identity securely enrolled for scanning.");
       queryClient.invalidateQueries({ queryKey: ["identity", user.id] });
       return;
     }
