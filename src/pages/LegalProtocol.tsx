@@ -85,6 +85,23 @@ const LegalProtocol = () => {
             </div>
           </section>
 
+          {/* Section: Refund Policy */}
+          <section id="refunds" className="space-y-8">
+            <div className="flex items-center gap-4 border-b border-white/10 pb-4">
+              <Scale className="h-8 w-8 text-primary" />
+              <h2 className="text-2xl font-black uppercase tracking-tight">Subscription & Refund Policy</h2>
+            </div>
+            <div className="space-y-6 text-sm leading-relaxed font-body text-muted-foreground bg-white/[0.02] p-8 rounded-2xl border border-white/5">
+              <p>
+                E-VARA operates on a strictly prepaid subscription model (Monthly or Annual). Due to the high computational costs of real-time OSINT scanning and encryption overhead, <strong>all payments are final and non-refundable.</strong>
+              </p>
+              <ul className="list-disc pl-6 space-y-3">
+                <li><span className="text-foreground font-bold uppercase">No Partial Refunds:</span> There are no refunds or credits for partial months of service, downgrades, or unused time on an active account.</li>
+                <li><span className="text-foreground font-bold uppercase">Cancellation:</span> You may cancel your subscription at any time through the Billing Portal. Your identity monitoring will remain active until the end of your current billing cycle.</li>
+              </ul>
+            </div>
+          </section>
+
           {/* Section: Security Ethics */}
           <section id="ethics" className="space-y-8">
             <div className="flex items-center gap-4 border-b border-white/10 pb-4">
